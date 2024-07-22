@@ -1,4 +1,3 @@
-
 ---
 
 # MyPortfolio.
@@ -30,12 +29,12 @@ To get started with the project locally, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/portfolio-website.git
+   git clone https://github.com/Soumo-git-hub/My-Portfolio.git
    ```
 
 2. **Navigate to the Project Directory**:
    ```bash
-   cd portfolio-website
+   cd My-Portfolio
    ```
 
 3. **Open the Project**:
