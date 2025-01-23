@@ -186,8 +186,12 @@ if (target) {
 
 document.addEventListener('mousemove', (e) => {
     const cursor = document.getElementById('custom-cursor');
-    cursor.style.left = `${e.clientX}px`;
-    cursor.style.top = `${e.clientY}px`;
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    requestAnimationFrame(() => {
+        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    });
 });
 
 document.addEventListener('mousedown', () => {
@@ -198,4 +202,37 @@ document.addEventListener('mousedown', () => {
 document.addEventListener('mouseup', () => {
     const cursor = document.getElementById('custom-cursor');
     cursor.classList.remove('clicked');
+});
+
+// Smooth scroll behavior
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Enhanced scroll reveal animations
+ScrollReveal().reveal('.services-box, .portfolio-box', {
+    duration: 1000,
+    distance: '40px',
+    easing: 'cubic-bezier(0.5, 0, 0, 1)',
+    origin: 'bottom',
+    interval: 200
+});
+
+// Add hover effect to interactive elements
+const interactiveElements = document.querySelectorAll('a, button, .btn, .services-box, .portfolio-box');
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        const cursor = document.getElementById('custom-cursor');
+        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(1.5)`;
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        const cursor = document.getElementById('custom-cursor');
+        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(1)`;
+    });
 });
