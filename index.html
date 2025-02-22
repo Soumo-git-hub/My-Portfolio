@@ -1,10 +1,19 @@
 <!-- Code created By Dev Zone Developer -->
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Portfolio </title>
+    <meta name="description" content="Portfolio of Soumyadyuti Dey - Cloud Computing, Web Development and AI expert">
+    <meta name="keywords" content="portfolio, web development, cloud computing, artificial intelligence">
+    <meta name="author" content="Soumyadyuti Dey">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Soumyadyuti Dey - Portfolio">
+    <meta property="og:description" content="Portfolio of Soumyadyuti Dey - Cloud Computing, Web Development and AI expert">
+    <meta property="og:type" content="website">
+    
+    <title>Soumyadyuti Dey - Portfolio</title>
     <link rel="shortcut icon" href="images/S-Logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <!-- Box Icons CSS  -->
@@ -17,22 +26,24 @@
 </head>
 
 <body>
-    <!-- Add this inside the <body> tag -->
-    <div id="custom-cursor"></div>
+    <div id="custom-cursor" aria-hidden="true"></div>
 
     <header class="header" data-aos="fade-down">
-        <a class='logo' href='/'>MyPortfolio.</a>
+        <a class='logo' href='/' aria-label="Home">MyPortfolio.</a>
 
-        <nav class="navbar">
-            <a href="#home" class="active">Home</a>
+        <nav class="navbar" aria-label="Main navigation">
+            <a href="#home" class="active" aria-current="page">Home</a>
             <a href="#about">About</a>
             <a href="#service">Service</a>
-            <a href="#portfolio">Portfolio</a>
             <a href="#contact">Contact</a>
         </nav>
 
-        <i class="bx bx-moon" id="darkMode-icon"></i>
-        <i class="bx bx-menu" id="menu-icon"></i>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="bx bx-moon" id="darkMode-icon"></i>
+        </button>
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="bx bx-menu" id="menu-icon"></i>
+        </button>
     </header>
 
     <!-- Home Section Design  -->
@@ -41,7 +52,7 @@
             <h3>Hello I am</h3>
             <h1>Soumyadyuti Dey</h1>
             <p>
-                I'm Soumyadyuti Dey, with expertise in Cloud Computing, Web Development and Artificial Intelligence.
+                I'm Soumyadyuti Dey, with expertise in Cloud Computing, Artificial Intelligence and Web Development.
             </p>
 
             <div class="social-media">
@@ -94,10 +105,10 @@
             <h2 class="heading">About <span>Me</span></h2>
 
             <p>
-                I am Soumyadyuti Dey, currently pursuing a BCA in Media & IT at The NorthCap University. My interests
-                span Cloud Computing, Web Development, Designing, Digital Art, Frontend Development, Artificial
-                Intelligence, and creating arcade-type games. I am passionate about blending technical skills with
-                creative problem-solving to drive excellence in every project I undertake.
+                I am Soumyadyuti Dey, a BCA student at The NorthCap University with a strong focus on Cloud Computing
+                and Artificial Intelligence. I am passionate about designing scalable cloud solutions, leveraging AI for
+                efficiency, and integrating technology with innovation. My expertise includes cloud infrastructure,
+                deployment, and automation, with a keen interest in AI-driven cloud applications.
             </p>
             <!-- <a href="Resume.pdf" download="Resume.pdf" class="btn"></a> -->
             <!-- Unable Upper a tag link with resume.pdf and change Resume.pdf with your Resume Link and disable down link  -->
@@ -108,173 +119,129 @@
     <!-- Code created By Dev Zone Developer -->
     <!-- Service Section Design  -->
     <section class="serives" id="service" data-aos="fade-up">
-        <h2 class="heading">My <span>Services</span></h2>
-
+        <h2 class="heading">My <span>Service</span></h2>
         <div class="services-container">
             <div class="services-box">
-                <i class='bx bxl-html5'></i>
-                <h3>Web Development</h3>
-                <p>
-                    I specialize in web development, creating responsive, user-friendly, and visually appealing
-                    web interfaces to enhance user experiences.
-                </p>
-                <div class="progresscircle" data-target="85"><span>&nbsp;85%</span></div>
-                <a href="#" class="btn">Read More</a>
-            </div>
-
-            <div class="services-box">
-                <i class='bx bx-brain'></i>
-                <h3>Artificial Intelligence</h3>
-                <p>
-                    I specialize in AI development, implementing intelligent solutions and machine learning models
-                    to solve complex problems and drive innovation.
-                </p>
-                <div class="progresscircle" data-target="75"><span>&nbsp;75%</span></div>
-                <a href="#" class="btn">Read More</a>
-            </div>
-
-            <div class="services-box">
-                <i class='bx bxl-google-cloud'></i>
+                <i class='bx bxl-google-cloud' aria-hidden="true"></i>
                 <h3>Cloud Computing</h3>
-                <p>
-                    I specialize in cloud computing, designing scalable, reliable, and efficient cloud-based solutions
-                    to optimize performance and drive innovation.
-                </p>
-                <div class="progresscircle" data-target="68"><span>&nbsp;68%</span></div>
-                <a href="#" class="btn">Read More</a>
+                <p>I specialize in cloud computing, designing scalable, reliable, and efficient cloud-based solutions to optimize performance and drive innovation.</p>
+                <div class="progresscircle" data-target="70"><span>70%</span></div>
+                <a href="#" class="btn" aria-label="Read more about Cloud Computing">Read More</a>
+            </div>
+
+            <div class="services-box">
+                <i class='bx bx-brain' aria-hidden="true"></i>
+                <h3>Artificial Intelligence</h3>
+                <p>I specialize in AI development, implementing intelligent solutions and machine learning models to solve complex problems and drive innovation.</p>
+                <div class="progresscircle" data-target="75"><span>75%</span></div>
+                <a href="#" class="btn" aria-label="Read more about Artificial Intelligence">Read More</a>
+            </div>
+
+            <div class="services-box">
+                <i class='bx bxl-html5' aria-hidden="true"></i>
+                <h3>Web Development</h3>
+                <p>I specialize in web development, creating responsive, user-friendly, and visually appealing web interfaces to enhance user experiences.</p>
+                <div class="progresscircle" data-target="90"><span>90%</span></div>
+                <a href="#" class="btn" aria-label="Read more about Web Development">Read More</a>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section Design  -->
-    <section class="portfolio" id="portfolio" data-aos="fade-up">
-        <h2 class="heading">Latest <span>Project</span></h2>
-        <div class="portfolio-container">
-            <div class="portfolio-box">
-                <img src="images/portfolio1.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>Live Weather Web App</h4>
-                    <p>
-                        This simple web application provides real-time weather information for different locations. It's
-                        built using HTML, CSS, and JavaScript and utilizes a weather API to fetch and display weather
-                        data.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/Live-Weather-Web-App" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="images/portfolio2.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>Fitness Tracker</h4>
-                    <p>
-                        The Fitness Tracker is a comprehensive Java-based application designed to help users achieve
-                        their fitness goals.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/Fitness-Tracker/tree/master" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="images/portfolio3.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>LucidTilt Scientific Calci</h4>
-                    <p>
-                        LucidTilt Scientific Calci is a modern and transparent calculator designed to provide users with
-                        a seamless experience in performing scientific calculations.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/LucidTilt-Scientific-Calci" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="images/portfolio4.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>Savvy</h4>
-                    <p>
-                        Savvy is a sophisticated laptop recommendation system implemented in C++. It assists users in
-                        finding the perfect laptops tailored to their preferences and requirements.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/Savvy" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="images/portfolio5.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>BMI Calculator Web App</h4>
-                    <p>
-                        This web application is a BMI calculator that helps users monitor and assess their Body Mass
-                        Index. It's built using HTML, CSS, and JavaScript, providing a simple and interactive experience
-                        for users.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/BMI-Calculator" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-
-            <div class="portfolio-box">
-                <img src="images/portfolio6.jpg" alt="portfolio" />
-                <div class="portfolio-layers">
-                    <h4>TechTrivia</h4>
-                    <p>
-                        TechTrivia Challenge is a Java-based quiz game designed to test your knowledge of
-                        technology-related topics.
-                    </p>
-                    <a href="https://github.com/Soumo-git-hub/Tech-Travia" target="_blank"><i
-                            class="bx bx-link-external"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Section Contact Design  -->
+    <!-- Contact Form Improvements -->
     <section class="contact" id="contact" data-aos="fade-up">
         <h2 class="heading">Contact <span>Me!</span></h2>
-        <form id="contact-form" onsubmit="sendToWhatsApp(event)">
+        <form id="contact-form" onsubmit="sendToWhatsApp(event)" aria-label="Contact form">
             <div class="input-box">
-                <input type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required>
-                <input type="email" name="email" id="email" placeholder="Enter Email Address" required>
+                <input type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required 
+                       aria-label="Full name">
+                <input type="email" name="email" id="email" placeholder="Enter Email Address" required 
+                       aria-label="Email address">
             </div>
             <div class="input-box">
-                <input type="number" name="number" id="number" placeholder="Enter Mobile Number" required>
-                <input type="text" name="email-subject" id="email-subject" placeholder="Enter Email Subject" required>
+                <input type="tel" name="number" id="number" placeholder="Enter Mobile Number" required 
+                       pattern="[0-9]{10}" aria-label="Mobile number">
+                <input type="text" name="email-subject" id="email-subject" placeholder="Enter Email Subject" required 
+                       aria-label="Email subject">
             </div>
-            <textarea name="message" id="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
-            <input type="submit" value="Send Message" class="btn">
+            <textarea name="message" id="message" cols="30" rows="10" placeholder="Your Message" required 
+                      aria-label="Your message"></textarea>
+            <button type="submit" class="btn">Send Message</button>
         </form>
     </section>
 
-    <!-- footer Design  -->
+    <!-- Footer Improvements -->
     <footer class="footer">
         <div class="footer-text">
-            <p>Copyright &copy; 2024 by Soumyadyuti Dey | All Rights Reserved.</p>
+            <p>Copyright &copy; <span id="current-year">2024</span> by Soumyadyuti Dey | All Rights Reserved.</p>
         </div>
         <div class="footer-iconTop">
-            <a href="#home"><i class="bx bx-up-arrow-alt"></i></a>
+            <a href="#home" aria-label="Back to top"><i class="bx bx-up-arrow-alt" aria-hidden="true"></i></a>
         </div>
     </footer>
 
-    <!-- scroll Reveal  -->
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <!-- Swipper JS  -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <!-- AOS JS Library  -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <!-- scroll Reveal  -->
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <!-- Swipper JS  -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <!-- AOS JS Library  -->
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                offset: 300,
+                duration: 2000,
+
+            });
+        </script>
+        <!-- Custom JS  -->
+        <script src="js/script.js"></script>
     <script>
-        AOS.init({
-            offset: 300,
-            duration: 2000,
-
-        });
+        // Update copyright year automatically
+        document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
-    <!-- Custom JS  -->
-    <script src="js/script.js"></script>
-</body>
+    <!-- Add before closing body tag, after your other scripts -->
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS with the correct public key
+        (function() {
+            emailjs.init("a3z3KecjA623DGU9k"); // Replace with your actual public key from EmailJS dashboard
+        })();
 
+        // Handle form submission
+        function sendToWhatsApp(event) {
+            event.preventDefault();
+
+            // Show loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            // Get form data
+            const templateParams = {
+                to_name: "Soumyadyuti",
+                from_name: document.getElementById('fullname').value,
+                from_email: document.getElementById('email').value,
+                phone_number: document.getElementById('number').value,
+                subject: document.getElementById('email-subject').value,
+                message: document.getElementById('message').value
+            };
+
+            // Send email using the correct service ID and template ID
+            emailjs.send("service_f7tz5o1", "template_1", templateParams)
+                .then(function() {
+                    alert('Thank you! Your message has been sent successfully.');
+                    document.getElementById('contact-form').reset();
+                })
+                .catch(function(error) {
+                    console.error('Email Error:', error);
+                    alert('Oops! Something went wrong. Please try again later.');
+                })
+                .finally(function() {
+                    // Reset button state
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                });
+        }
+    </script>
+</body>
 </html>

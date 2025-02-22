@@ -1227,39 +1227,3 @@ section {
         /* border-left: 38.4rem solid transparent; */
     }
 }
-
-body {
-    cursor: none; /* Hide the default cursor */
-}
-
-/* Custom cursor styles */
-#custom-cursor {
-    width: 40px; /* Size of the cursor */
-    height: 40px; /* Size of the cursor */
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none; /* Ensures the cursor doesn't interfere with other elements */
-    z-index: 9999; /* Ensures the cursor is on top of other elements */
-    transform: translate(-50%, -50%); /* Centers the cursor */
-    background: linear-gradient(135deg, #002fff, #00c2ff); /* Gradient effect */
-    border: 6px solid white; /* White border */
-    border-radius: 50%; /* Rounded corners to create a circular shape */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.816); /* Slight shadow */
-    clip-path: circle(50% at 50% 50%); /* Rounded circle shape */
-    transition: transform 0.2s ease, background-color 0.2s ease; /* Smooth transition */
-    mix-blend-mode: difference;
-    background: var(--white-color);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#custom-cursor.clicked {
-    background: linear-gradient(135deg, #4000ff, #b7fffe); /* Change gradient color */
-    transform: translate(-50%, -50%) scale(0.8); /* Scale up cursor */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Increase shadow */
-}
-
-/* Optional: Add hover effects */
-a:hover, button:hover, .interactive:hover {
-    cursor: none; /* Hide the default cursor */
-}
