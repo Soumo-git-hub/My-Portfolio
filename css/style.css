@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+
 * {
     margin: 0;
     padding: 0;
@@ -283,26 +284,31 @@ section {
 }
 
 @-webkit-keyframes professionrotate {
+
     0%,
     20% {
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
+
     25%,
     45% {
         -webkit-transform: rotate(-90deg);
         transform: rotate(-90deg);
     }
+
     50%,
     70% {
         -webkit-transform: rotate(-180deg);
         transform: rotate(-180deg);
     }
+
     75%,
     95% {
         -webkit-transform: rotate(-270deg);
         transform: rotate(-270deg);
     }
+
     100% {
         -webkit-transform: rotate(-360deg);
         transform: rotate(-360deg);
@@ -310,26 +316,31 @@ section {
 }
 
 @keyframes professionrotate {
+
     0%,
     20% {
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
+
     25%,
     45% {
         -webkit-transform: rotate(-90deg);
         transform: rotate(-90deg);
     }
+
     50%,
     70% {
         -webkit-transform: rotate(-180deg);
         transform: rotate(-180deg);
     }
+
     75%,
     95% {
         -webkit-transform: rotate(-270deg);
         transform: rotate(-270deg);
     }
+
     100% {
         -webkit-transform: rotate(-360deg);
         transform: rotate(-360deg);
@@ -851,7 +862,7 @@ section {
     /* Center horizontally */
     align-items: center;
     /* Center vertically */
-    background: conic-gradient( from 0deg at 50% 50%, var(--main-color) 0%, var(--main-color) 0% var(--i), var(--white-color) 0deg, var(--white-color) 78.75deg, var(--white-color) 166.87deg, var(--white-color) 243.75deg, var(--white-color) 322.5deg, var(--white-color) 360deg);
+    background: conic-gradient(from 0deg at 50% 50%, var(--main-color) 0%, var(--main-color) 0% var(--i), var(--white-color) 0deg, var(--white-color) 78.75deg, var(--white-color) 166.87deg, var(--white-color) 243.75deg, var(--white-color) 322.5deg, var(--white-color) 360deg);
     box-shadow: 0px 5px 15px var(--shadow-color), -0px -5px 15px var(--shadow-color);
 }
 
@@ -877,19 +888,23 @@ section {
     html {
         font-size: 55%;
     }
+
     .home .profession-container {
         height: 85.8rem;
     }
+
     .home .profession-container .profession-box {
         right: -12rem;
         height: 85.8rem;
     }
+
     .home .profession-container .overlay {
         border-top: 44rem solid var(--main-color);
         border-right: 38.4rem solid var(--main-color);
         border-bottom: 44rem solid var(--main-color);
         border-left: 38.4rem solid transparent;
     }
+
     .home-img img {
         top: 6%;
     }
@@ -898,25 +913,31 @@ section {
 /* Laptop */
 
 @media (max-width: 1024px) {
+
     /* .navbar a:nth-child(1) {
     color: var(--main-color);
   } */
     .header {
         padding: 2rem 3%;
     }
+
     section {
         padding: 10rem 3% 2rem;
     }
+
     .home .profession-container .profession-box {
         right: -22rem;
     }
+
     .home .profession-container .overlay {
         right: -15rem;
     }
+
     .home-img img {
         right: -5rem;
         top: 6%;
     }
+
     .navbar a.active::before {
         /* background: var(--main-color); */
         opacity: 0.7;
@@ -926,32 +947,41 @@ section {
 /* Tablet and below */
 
 @media (max-width: 991px) {
+
     .navbar a:nth-child(1),
     .navbar a:nth-child(2) {
         color: var(--main-color);
     }
+
     .home .home-content {
         max-width: 50rem;
     }
+
     .home .profession-container .profession-box {
         right: -45rem;
     }
+
     .home .profession-container .overlay {
         right: -31.5rem;
     }
+
     .home-img {
         display: none;
     }
+
     .navbar a.active::before {
         background: var(--main-color);
     }
+
     .serives,
     .portfolio {
         padding-bottom: 7rem;
     }
+
     .contact {
         min-height: auto;
     }
+
     .footer {
         padding: 2rem 3%;
     }
@@ -963,6 +993,7 @@ section {
     #menu-icon {
         display: block;
     }
+
     #darkMode-icon {
         position: absolute;
         right: 7rem;
@@ -970,9 +1001,11 @@ section {
         color: var(--text-color);
         margin-bottom: 0.1rem;
     }
+
     .header.sticky .navbar a.active {
         color: var(--main-color);
     }
+
     .navbar {
         position: absolute;
         top: 100%;
@@ -985,26 +1018,32 @@ section {
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
         display: none;
     }
+
     .navbar.active {
         display: block;
     }
+
     .navbar a {
         display: block;
         font-size: 2rem;
         margin: 3rem 0;
         color: var(--text-color);
     }
+
     .navbar a:nth-child(1),
     .navbar a:nth-child(2),
     .navbar a:nth-child(3) {
         color: var(--text-color);
     }
+
     .navbar a.active {
         color: var(--main-color);
     }
+
     .navbar a::before {
         display: none;
     }
+
     .home {
         padding: 10rem 3% 23rem;
         -webkit-box-pack: center;
@@ -1012,20 +1051,25 @@ section {
         justify-content: center;
         text-align: center;
     }
+
     .home-content h3 {
         font-size: 2.6rem;
     }
+
     .home-content h1 {
         font-size: 5rem;
     }
+
     .home-content .social-media a {
         margin: 2.5rem 0.75rem 3rem;
     }
+
     .home .profession-container {
         left: 0;
         width: 100%;
         height: 100%;
     }
+
     .home .profession-container .profession-box {
         position: fixed;
         top: 52%;
@@ -1033,6 +1077,7 @@ section {
         border-radius: 0;
         width: 100%;
     }
+
     .home .profession-box .profession {
         padding: 0 13rem;
         left: auto;
@@ -1040,35 +1085,42 @@ section {
         -ms-transform-origin: 0;
         transform-origin: 0;
     }
+
     .home .profession-box .profession:nth-child(1) {
         -webkit-transform: rotate(-90deg) translate(-215px, -57px);
         -ms-transform: rotate(-90deg) translate(-215px, -57px);
         transform: rotate(-90deg) translate(-215px, -57px);
     }
+
     .home .profession-box .profession:nth-child(1) i {
         margin-right: 0;
     }
+
     .home .profession-box .profession:nth-child(2) {
         -webkit-transform: rotate(0deg) translate(0px, calc(-335px + 50px));
         -ms-transform: rotate(0deg) translate(0px, calc(-335px + 50px));
         transform: rotate(0deg) translate(0px, calc(-335px + 50px));
     }
+
     .home .profession-box .profession:nth-child(3) {
         -webkit-transform: rotate(90deg) translate(-210px, -490px);
         -ms-transform: rotate(90deg) translate(-210px, -490px);
         transform: rotate(90deg) translate(-210px, -490px);
     }
+
     .home .profession-box .profession:nth-child(4) {
         -webkit-transform: rotate(180deg) translate(-420px, -290px);
         -ms-transform: rotate(180deg) translate(-420px, -290px);
         transform: rotate(180deg) translate(-420px, -290px);
     }
+
     .home .profession-box .circle {
         position: fixed;
         width: 67rem;
         height: 67rem;
         z-index: -1;
     }
+
     .home .profession-container .overlay {
         position: fixed;
         top: 93rem;
@@ -1083,6 +1135,7 @@ section {
         border-bottom: 19rem solid var(--main-color);
         /* border-left: 38.4rem solid transparent; */
     }
+
     .about {
         -webkit-box-orient: vertical;
         -webkit-box-direction: reverse;
@@ -1090,29 +1143,36 @@ section {
         flex-direction: column-reverse;
         text-align: center;
     }
+
     .about-content h2 {
         text-align: center;
     }
+
     .about-img img {
         width: 70vw;
         margin-top: -2rem;
     }
+
     .serives h2,
     .portfolio h2 {
         margin-bottom: 3rem;
     }
+
     .portfolio .portfolio-container {
         display: -ms-grid;
         display: grid;
         -ms-grid-columns: 1fr 1fr;
         grid-template-columns: repeat(2, 1fr);
     }
+
     .testimonial-container .testimonial-wrapper {
         padding: 5rem 0;
     }
+
     .testimonial-content .testimonial-slide {
         padding: 3rem 2rem;
     }
+
     .testimonial-box .swiper-button-next,
     .testimonial-box .swiper-button-prev {
         display: none;
@@ -1125,28 +1185,34 @@ section {
     .home .profession-box .profession {
         padding: 0 2rem;
     }
+
     .portfolio .portfolio-container {
         -ms-grid-columns: 1fr;
         grid-template-columns: 1fr;
     }
+
     .home .profession-box .profession:nth-child(1) {
         -webkit-transform: rotate(-90deg) translate(-117px, -170px);
         -ms-transform: rotate(-90deg) translate(-117px, -170px);
         transform: rotate(-90deg) translate(-117px, -170px);
     }
+
     .home .profession-box .profession:nth-child(1) i {
         margin-right: 0;
     }
+
     .home .profession-box .profession:nth-child(2) {
         -webkit-transform: rotate(0deg) translate(0px, calc(-330px + 50px));
         -ms-transform: rotate(0deg) translate(0px, calc(-330px + 50px));
         transform: rotate(0deg) translate(0px, calc(-330px + 50px));
     }
+
     .home .profession-box .profession:nth-child(3) {
         -webkit-transform: rotate(90deg) translate(-120px, -410px);
         -ms-transform: rotate(90deg) translate(-120px, -410px);
         transform: rotate(90deg) translate(-120px, -410px);
     }
+
     .home .profession-box .profession:nth-child(4) {
         -webkit-transform: rotate(180deg) translate(-240px, -283px);
         -ms-transform: rotate(180deg) translate(-240px, -283px);
@@ -1158,51 +1224,62 @@ section {
     html {
         font-size: 50%;
     }
+
     #darkMode-icon {
         right: 6rem;
     }
+
     .home {
         padding: 12rem 3% 30rem;
     }
+
     .home .profession-container .profession-box {
         top: 50%;
     }
+
     .home .profession-box .profession:nth-child(1) {
         -webkit-transform: rotate(-90deg) translate(-117px, -170px);
         -ms-transform: rotate(-90deg) translate(-117px, -170px);
         transform: rotate(-90deg) translate(-117px, -170px);
     }
+
     .home .profession-box .profession:nth-child(1) i {
         margin-right: 0;
     }
+
     .home .profession-box .profession:nth-child(2) {
         -webkit-transform: rotate(0deg) translate(0px, calc(-330px + 50px));
         -ms-transform: rotate(0deg) translate(0px, calc(-330px + 50px));
         transform: rotate(0deg) translate(0px, calc(-330px + 50px));
     }
+
     .home .profession-box .profession:nth-child(3) {
         -webkit-transform: rotate(90deg) translate(-105px, -380px);
         -ms-transform: rotate(90deg) translate(-105px, -380px);
         transform: rotate(90deg) translate(-105px, -380px);
     }
+
     .home .profession-box .profession:nth-child(4) {
         -webkit-transform: rotate(180deg) translate(-220px, -280px);
         -ms-transform: rotate(180deg) translate(-220px, -280px);
         transform: rotate(180deg) translate(-220px, -280px);
     }
+
     .contact form .input-box input {
         width: 100%;
     }
+
     .about-img img {
         width: 90vw;
     }
+
     .footer {
         -webkit-box-orient: vertical;
         -webkit-box-direction: reverse;
         -ms-flex-direction: column-reverse;
         flex-direction: column-reverse;
     }
-    
+
     .footer p {
         text-align: center;
         margin: 2rem auto;
@@ -1210,8 +1287,8 @@ section {
         margin-left: 24;
         max-width: 100%;
     }
-    
-    
+
+
     .home .profession-container .overlay {
         position: fixed;
         top: 63rem;
