@@ -128,6 +128,7 @@ function sendToGmail(event) {
 // Progress Button Animation 
 function animateProgress(element, start, end, duration) {
     let startTime = null;
+    let animationFrame;
 
     function animationStep(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -142,97 +143,175 @@ function animateProgress(element, start, end, duration) {
         }
 
         if (percentage < 100) {
-            requestAnimationFrame(animationStep);
+            animationFrame = requestAnimationFrame(animationStep);
         }
     }
 
-    // Reset the animation start time and initiate the animation
-    function startAnimation() {
-        startTime = null;
-        requestAnimationFrame(animationStep);
+    // Cancel any existing animation
+    if (element.animationFrame) {
+        cancelAnimationFrame(element.animationFrame);
     }
 
-    startAnimation(); // Start the animation
+    element.animationFrame = requestAnimationFrame(animationStep);
 }
 
-// Select the target element
-const target = document.querySelector('.progresscircle');
+// Progress Circle Animation
+function animateProgressCircle(element) {
+    const progressBar = element.querySelector('.progress-bar');
+    const progressText = element.querySelector('.progress-text');
+    const target = parseInt(element.getAttribute('data-progress'));
+    let current = 0;
+    
+    const animation = setInterval(() => {
+        current += 1;
+        const degrees = (current / 100) * 360;
+        progressBar.style.background = `conic-gradient(var(--main-color) 0deg, var(--main-color) ${degrees}deg, var(--white-color) ${degrees}deg)`;
+        progressText.textContent = `${current}%`;
+        
+        if (current >= target) {
+            clearInterval(animation);
+            progressBar.style.background = `conic-gradient(var(--main-color) 0deg, var(--main-color) ${(target / 100) * 360}deg, var(--white-color) ${(target / 100) * 360}deg)`;
+            progressText.textContent = `${target}%`;
+        }
+    }, 20);
+}
 
-// Create an IntersectionObserver instance
-const observer = new IntersectionObserver((entries, observer) => {
+// Initialize progress circles when they come into view
+const progressObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const progressElements = document.querySelectorAll('.progresscircle');
+            const progressElements = document.querySelectorAll('.progress-circle');
             progressElements.forEach(element => {
-                const targetValue = parseInt(element.getAttribute('data-target'), 10);
-                animateProgress(element, 0, targetValue, 5000); // animate from 0% to target% over 5000ms (5 seconds)
+                if (!element.hasAttribute('data-animated')) {
+                    animateProgressCircle(element);
+                    element.setAttribute('data-animated', 'true');
+                }
             });
-            // Optionally, you can unobserve the element if you only want to animate once
-            // observer.unobserve(entry.target);
-        } else {
-            console.log('Element is not in view:', entry.target);
         }
     });
 }, {
-    threshold: 0.1 // Adjust threshold as needed (0 to 1)
+    threshold: 0.2
 });
 
-// Start observing the target element
-if (target) {
-    observer.observe(target);
-}
-
-
-
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.getElementById('custom-cursor');
-    const x = e.clientX;
-    const y = e.clientY;
-    
-    requestAnimationFrame(() => {
-        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
-    });
+// Start observing the services section
+document.addEventListener('DOMContentLoaded', () => {
+    const servicesSection = document.querySelector('.serives');
+    if (servicesSection) {
+        progressObserver.observe(servicesSection);
+    }
 });
 
-document.addEventListener('mousedown', () => {
-    const cursor = document.getElementById('custom-cursor');
-    cursor.classList.add('clicked');
-});
-
-document.addEventListener('mouseup', () => {
-    const cursor = document.getElementById('custom-cursor');
-    cursor.classList.remove('clicked');
-});
-
-// Smooth scroll behavior
+// Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     });
 });
 
-// Enhanced scroll reveal animations
-ScrollReveal().reveal('.services-box, .portfolio-box', {
-    duration: 1000,
-    distance: '40px',
-    easing: 'cubic-bezier(0.5, 0, 0, 1)',
-    origin: 'bottom',
-    interval: 200
+// Progress Circle Animation
+const progressCircles = document.querySelectorAll('.progress-circle');
+progressCircles.forEach(circle => {
+    const target = parseInt(circle.getAttribute('data-progress'));
+    const progress = circle.querySelector('.progress');
+    progress.style.strokeDashoffset = 283 - (283 * target / 100);
 });
 
-// Add hover effect to interactive elements
-const interactiveElements = document.querySelectorAll('a, button, .btn, .services-box, .portfolio-box');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        const cursor = document.getElementById('custom-cursor');
-        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(1.5)`;
+// Header Scroll Effect
+let lastScroll = 0;
+const header = document.querySelector('.header');
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll <= 0) {
+        header.classList.remove('scroll-up');
+        return;
+    }
+    
+    if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+        header.classList.remove('scroll-up');
+        header.classList.add('scroll-down');
+    } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+        header.classList.remove('scroll-down');
+        header.classList.add('scroll-up');
+    }
+    lastScroll = currentScroll;
+});
+
+// Initialize AOS
+AOS.init({
+    duration: 800,
+    offset: 100,
+    once: true
+});
+
+// Mobile Menu Toggle
+const menuBtn = document.querySelector('#menu-btn');
+const navbar = document.querySelector('.navbar');
+
+menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('fa-times');
+    navbar.classList.toggle('active');
+});
+
+// Portfolio Filter Animation
+const portfolioItems = document.querySelectorAll('.portfolio-box');
+portfolioItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        item.style.transform = 'scale(1.02)';
     });
     
-    el.addEventListener('mouseleave', () => {
-        const cursor = document.getElementById('custom-cursor');
-        cursor.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(1)`;
+    item.addEventListener('mouseleave', () => {
+        item.style.transform = 'scale(1)';
     });
+});
+
+// Form Validation
+const contactForm = document.querySelector('.contact form');
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Basic form validation
+    const inputs = contactForm.querySelectorAll('input, textarea');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = 'red';
+        } else {
+            input.style.borderColor = '';
+        }
+    });
+    
+    if (isValid) {
+        // Here you would typically send the form data
+        alert('Message sent successfully!');
+        contactForm.reset();
+    }
+});
+
+// Add smooth reveal animation for sections
+const sections = document.querySelectorAll('section');
+const observerOptions = {
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('reveal');
+        }
+    });
+}, observerOptions);
+
+sections.forEach(section => {
+    observer.observe(section);
 });
