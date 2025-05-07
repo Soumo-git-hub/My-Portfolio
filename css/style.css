@@ -15,25 +15,40 @@
 
 :root {
     --bg-color: #f8f9ff;
-    --text-color: #2d3436;
+    --text-color: #1a1f36;
     --main-color: #365cff;
     --secondary-color: #2a47cc;
     --accent-color: #4d6fff;
     --white-color: #ffffff;
     --shadow-color: rgba(54, 92, 255, 0.15);
-    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-bg: rgba(248, 249, 255, 0.95);
     --glass-border: rgba(54, 92, 255, 0.2);
     --gradient-start: #365cff;
     --gradient-end: #2a47cc;
+    --card-bg: #ffffff;
+    --hover-bg: #f0f4ff;
+    --text-secondary: #4a5568;
+    --border-color: #e2e8f0;
     --i: 0%;
+    transition: all 0.3s ease;
 }
 
 .dark-mode {
     --bg-color: #0a192f;
     --text-color: #e6f1ff;
-    --shadow-color: rgba(54, 92, 255, 0.2);
+    --main-color: #64ffda;
+    --secondary-color: #4d6fff;
+    --accent-color: #64ffda;
+    --white-color: #0a192f;
+    --shadow-color: rgba(100, 255, 218, 0.15);
     --glass-bg: rgba(10, 25, 47, 0.85);
-    --glass-border: rgba(54, 92, 255, 0.1);
+    --glass-border: rgba(100, 255, 218, 0.1);
+    --gradient-start: #64ffda;
+    --gradient-end: #4d6fff;
+    --card-bg: #112240;
+    --hover-bg: #1d3461;
+    --text-secondary: #8892b0;
+    --border-color: #233554;
 }
 
 html {
@@ -44,6 +59,7 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .header {
@@ -59,15 +75,15 @@ body {
     transition: all 0.4s ease;
     backdrop-filter: blur(10px);
     background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 30px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 .header.sticky {
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 30px var(--shadow-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
     transform: translateY(-100%);
     animation: slideDown 0.5s forwards;
 }
@@ -117,13 +133,14 @@ body {
 
 #darkMode-icon {
     font-size: 2.4rem;
-    color: var(--white-color);
+    color: var(--text-color);
     cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.header.sticky #darkMode-icon {
-    color: var(--text-color);
-    opacity: 0.9;
+#darkMode-icon:hover {
+    transform: rotate(180deg);
+    color: var(--main-color);
 }
 
 #menu-icon {
@@ -161,10 +178,13 @@ section {
     font-size: 5.6rem;
     font-weight: 700;
     margin-bottom: 0.3rem;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .home-content p {
     font-size: 1.6rem;
+    color: var(--text-secondary);
 }
 
 .home-content .social-media a {
@@ -206,7 +226,7 @@ section {
     font-size: 1.6rem;
     font-weight: 600;
     color: var(--white-color);
-    border: none;
+    border: 1px solid var(--main-color);
     letter-spacing: 0.1rem;
     transition: all 0.3s ease;
     position: relative;
@@ -229,6 +249,7 @@ section {
 .btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px var(--shadow-color);
+    background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
 }
 
 .btn:hover::before {
@@ -477,17 +498,17 @@ section {
     -webkit-box-flex: 1;
     -ms-flex: 1 1 30rem;
     flex: 1 1 30rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: var(--card-bg);
     padding: 3rem 2rem;
     border-radius: 1.5rem;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px var(--shadow-color);
-    border: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px var(--shadow-color);
+    border: 1px solid var(--border-color);
 }
 
 .services-container .services-box::before {
@@ -504,8 +525,10 @@ section {
 }
 
 .services-container .services-box:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px) scale(1.02);
+    background: var(--hover-bg);
     border-color: var(--main-color);
+    box-shadow: 0 8px 30px var(--shadow-color);
 }
 
 .services-container .services-box:hover::before {
@@ -567,8 +590,8 @@ section {
     display: flex;
     border-radius: 1.5rem;
     overflow: hidden;
-    box-shadow: 0 4px 30px var(--shadow-color);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .portfolio-box img {
@@ -591,8 +614,8 @@ section {
     width: 100%;
     height: 100%;
     background: linear-gradient(to top, 
-        rgba(10, 25, 47, 0.95),
-        rgba(54, 92, 255, 0.85)
+        rgba(54, 92, 255, 0.95),
+        rgba(42, 71, 204, 0.85)
     );
     display: flex;
     justify-content: center;
@@ -708,11 +731,12 @@ section {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    background: var(--bg-color);
+    background: var(--card-bg);
     border-radius: 2rem;
-    -webkit-box-shadow: 0 0.1rem 0.5rem var(--shadow-color);
-    box-shadow: 0 0.1rem 0.5rem var(--shadow-color);
+    -webkit-box-shadow: 0 4px 20px var(--shadow-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
     padding: 3rem 5rem;
+    border: 1px solid var(--border-color);
     border-top: 0.8rem solid var(--main-color);
     border-bottom: 0.8rem solid var(--main-color);
 }
@@ -735,6 +759,11 @@ section {
 .testimonial-slide p {
     font-size: 1.4rem;
     text-align: center;
+}
+
+.testimonial-slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px var(--shadow-color);
 }
 
 .contact h2 {
@@ -765,18 +794,18 @@ section {
     padding: 1.5rem;
     font-size: 1.6rem;
     color: var(--text-color);
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 0.8rem;
     margin: 0.7rem 0;
     box-shadow: 0 4px 15px var(--shadow-color);
-    border: 1px solid var(--glass-border);
     transition: all 0.3s ease;
 }
 
 .contact form .input-box input:focus,
 .contact form textarea:focus {
     border-color: var(--main-color);
+    background: var(--hover-bg);
     box-shadow: 0 4px 20px var(--shadow-color);
 }
 
@@ -816,9 +845,9 @@ section {
     -ms-flex-align: center;
     align-items: center;
     padding: 0.8rem;
-    background: var(--white-color);
+    background: var(--card-bg);
     border-radius: 0.8rem;
-    border: 0.2rem solid var(--main-color);
+    border: 2px solid var(--main-color);
     outline: 0.2rem solid transparent;
     -webkit-transition: 0.5s ease;
     -o-transition: 0.5s ease;
@@ -826,7 +855,9 @@ section {
 }
 
 .footer-iconTop a:hover {
-    outline-color: var(--white-color);
+    background: var(--main-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-color);
 }
 
 .footer-iconTop a i {
@@ -841,11 +872,11 @@ section {
     height: 120px;
     margin: 2rem auto;
     border-radius: 50%;
-    background: var(--bg-color);
+    background: var(--card-bg);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 .progress-circle .progress-bar {
@@ -998,7 +1029,7 @@ section {
         width: 100%;
         padding: 1rem 3%;
         background: var(--bg-color);
-        border-top: 0.1rem solid var(--glass-border);
+        border-top: 0.1rem solid var(--border-color);
         box-shadow: 0 0.5rem 1rem var(--shadow-color);
         display: none;
     }
@@ -1347,8 +1378,8 @@ html {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px 0 var(--shadow-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 /* Progress Circle Animation */
@@ -1357,7 +1388,7 @@ html {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: conic-gradient(var(--main-color) 0deg, var(--glass-bg) 0deg);
+    background: var(--card-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1370,7 +1401,7 @@ html {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: var(--bg-color);
+    background: var(--card-bg);
 }
 
 .progresscircle span {
@@ -1398,8 +1429,8 @@ html {
 
 .portfolio-layers {
     background: linear-gradient(to top, 
-        rgba(10, 25, 47, 0.95),
-        rgba(54, 92, 255, 0.85)
+        rgba(54, 92, 255, 0.95),
+        rgba(42, 71, 204, 0.85)
     );
     transform: translateY(100%);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1440,7 +1471,7 @@ html {
 
 .social-media a:hover {
     transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 10px 20px var(--shadow-color);
+    box-shadow: 0 8px 25px var(--shadow-color);
 }
 
 /* Dark Mode Toggle Animation */

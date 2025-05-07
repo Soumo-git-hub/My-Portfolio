@@ -2,12 +2,12 @@
 /* =============== Menu Icons Navbar =============== */
 let menuicon = document.querySelector('#menu-icon');
 let navbar = document.querySelector('.navbar');
+
+// Menu icon click handler
 menuicon.onclick = () => {
     menuicon.classList.toggle('bx-x');
     navbar.classList.toggle('active');
 };
-
-
 
 /* =============== Scroll section active link =============== */
 let sections = document.querySelectorAll('section');
@@ -30,14 +30,12 @@ window.onscroll = () => {
 
     /* =============== Sticky NavBar =============== */
     let header = document.querySelector('.header');
-    header.classList.toggle('sticky', window.scrollY > 100).togglemenu();
-
+    header.classList.toggle('sticky', window.scrollY > 100);
 
     /* =============== remove menu icon navbar when click nvbar link (scroll) =============== */
     menuicon.classList.remove('bx-x');
     navbar.classList.remove('active');
 };
-
 
 /* =============== Swipper =============== */
 var swiper = new Swiper(".mySwiper", {
@@ -55,25 +53,36 @@ var swiper = new Swiper(".mySwiper", {
     },
 });
 
-// Get the width of the window's content area
-//   var screenWidth = window.innerWidth;
-//   var screenheight = window.innerHeight;
-
-//   // Display the width in an alert box
-//   alert("The width of your screen is: " + screenWidth + " pixels and Height is " + screenheight);
-
-
-
 /* =============== Dark Light Mode =============== */
 let darkmodeIcon = document.querySelector('#darkMode-icon');
-darkmodeIcon.onclick = () => {
-    darkmodeIcon.classList.toggle('bx-sun');
-    document.body.classList.toggle('dark-mode');
+
+// Check for saved theme preference or use system preference
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+const savedTheme = localStorage.getItem('theme');
+
+// Set initial theme
+if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+    document.body.classList.add('dark-mode');
+    darkmodeIcon.classList.remove('bx-moon');
+    darkmodeIcon.classList.add('bx-sun');
 }
+
+// Dark mode toggle function
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    darkmodeIcon.classList.toggle('bx-moon');
+    darkmodeIcon.classList.toggle('bx-sun');
+    
+    // Save theme preference
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Add click event listener
+darkmodeIcon.addEventListener('click', toggleDarkMode);
 
 /* =============== Scroll Reveal =============== */
 ScrollReveal({
-    //  reset: true,
     distance: '80px',
     duration: 2000,
     delay: 200
@@ -91,7 +100,6 @@ ScrollReveal().reveal('.home-content h1, .about-img img', {
 ScrollReveal().reveal('.home-content h3, .home-content p, .about-content', {
     origin: 'right'
 });
-
 
 /* =============== Mail =============== */
 function sendToGmail(event) {
@@ -118,12 +126,6 @@ function sendToGmail(event) {
     // Redirect to Gmail
     window.open(gmailURL, '_blank');
 }
-
-
-
-
-
-
 
 // Progress Button Animation 
 function animateProgress(element, start, end, duration) {
@@ -254,8 +256,6 @@ AOS.init({
 
 // Mobile Menu Toggle
 const menuBtn = document.querySelector('#menu-btn');
-const navbar = document.querySelector('.navbar');
-
 menuBtn.addEventListener('click', () => {
     menuBtn.classList.toggle('fa-times');
     navbar.classList.toggle('active');
@@ -299,7 +299,6 @@ contactForm.addEventListener('submit', (e) => {
 });
 
 // Add smooth reveal animation for sections
-const sections = document.querySelectorAll('section');
 const observerOptions = {
     threshold: 0.1
 };
