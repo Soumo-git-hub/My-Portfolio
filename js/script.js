@@ -1,13 +1,32 @@
 // Code created By Dev Zone Developer
 /* =============== Menu Icons Navbar =============== */
+document.addEventListener('DOMContentLoaded', () => {
 let menuicon = document.querySelector('#menu-icon');
 let navbar = document.querySelector('.navbar');
 
+    if (menuicon && navbar) {
 // Menu icon click handler
 menuicon.onclick = () => {
     menuicon.classList.toggle('bx-x');
     navbar.classList.toggle('active');
 };
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuicon.contains(e.target) && !navbar.contains(e.target)) {
+                menuicon.classList.remove('bx-x');
+                navbar.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking on a link
+        navbar.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuicon.classList.remove('bx-x');
+                navbar.classList.remove('active');
+            });
+        });
+    }
 
 /* =============== Scroll section active link =============== */
 let sections = document.querySelectorAll('section');
@@ -23,18 +42,27 @@ window.onscroll = () => {
         if (top >= offset && top < offset + height) {
             navlinks.forEach(link => {
                 link.classList.remove('active');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+                    const activeLink = document.querySelector('header nav a[href*=' + id + ']');
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
             });
         }
     });
 
     /* =============== Sticky NavBar =============== */
     let header = document.querySelector('.header');
+        if (header) {
     header.classList.toggle('sticky', window.scrollY > 100);
+        }
 
     /* =============== remove menu icon navbar when click nvbar link (scroll) =============== */
+        if (menuicon) {
     menuicon.classList.remove('bx-x');
+        }
+        if (navbar) {
     navbar.classList.remove('active');
+        }
 };
 
 /* =============== Swipper =============== */
@@ -196,12 +224,10 @@ const progressObserver = new IntersectionObserver((entries) => {
 });
 
 // Start observing the services section
-document.addEventListener('DOMContentLoaded', () => {
     const servicesSection = document.querySelector('.serives');
     if (servicesSection) {
         progressObserver.observe(servicesSection);
     }
-});
 
 // Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -222,13 +248,16 @@ const progressCircles = document.querySelectorAll('.progress-circle');
 progressCircles.forEach(circle => {
     const target = parseInt(circle.getAttribute('data-progress'));
     const progress = circle.querySelector('.progress');
+        if (progress) {
     progress.style.strokeDashoffset = 283 - (283 * target / 100);
+        }
 });
 
 // Header Scroll Effect
 let lastScroll = 0;
 const header = document.querySelector('.header');
 
+    if (header) {
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
@@ -246,6 +275,7 @@ window.addEventListener('scroll', () => {
     }
     lastScroll = currentScroll;
 });
+    }
 
 // Initialize AOS
 AOS.init({
@@ -256,14 +286,17 @@ AOS.init({
 
 // Mobile Menu Toggle
 const menuBtn = document.querySelector('#menu-btn');
+    if (menuBtn && navbar) {
 menuBtn.addEventListener('click', () => {
     menuBtn.classList.toggle('fa-times');
     navbar.classList.toggle('active');
 });
+    }
 
 // Portfolio Filter Animation
 const portfolioItems = document.querySelectorAll('.portfolio-box');
 portfolioItems.forEach(item => {
+        if (item) {
     item.addEventListener('mouseenter', () => {
         item.style.transform = 'scale(1.02)';
     });
@@ -271,10 +304,12 @@ portfolioItems.forEach(item => {
     item.addEventListener('mouseleave', () => {
         item.style.transform = 'scale(1)';
     });
+        }
 });
 
 // Form Validation
 const contactForm = document.querySelector('.contact form');
+    if (contactForm) {
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -297,6 +332,7 @@ contactForm.addEventListener('submit', (e) => {
         contactForm.reset();
     }
 });
+    }
 
 // Add smooth reveal animation for sections
 const observerOptions = {
@@ -313,4 +349,27 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(section => {
     observer.observe(section);
+    });
+
+// Mobile expertise bar fade+slide animation
+function cycleExpertiseChips() {
+  const bar = document.querySelector('.expertise-bar-fade-mobile');
+  if (!bar) return;
+  const chips = bar.querySelectorAll('.expertise-chip');
+  let idx = 0;
+  chips.forEach((chip, i) => chip.classList.remove('active', 'out'));
+  chips[0].classList.add('active');
+  setInterval(() => {
+    chips[idx].classList.remove('active');
+    chips[idx].classList.add('out');
+    const prevIdx = idx;
+    idx = (idx + 1) % chips.length;
+    chips[idx].classList.remove('out');
+    chips[idx].classList.add('active');
+    // Remove 'out' from previous chip after animation
+    setTimeout(() => chips[prevIdx].classList.remove('out'), 700);
+  }, 1700);
+}
+
+document.addEventListener('DOMContentLoaded', cycleExpertiseChips);
 });
