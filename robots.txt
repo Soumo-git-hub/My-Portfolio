@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-portfolio-url.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow specific files
+Disallow: /css/
+Disallow: /js/
+Disallow: /images/
+Disallow: *.pdf
+Disallow: *.zip
+Disallow: *.rar
+
+# Allow important files
+Allow: /index.html
+Allow: /sitemap.xml 
