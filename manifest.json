@@ -1,27 +1,27 @@
 {
-  "name": "Soumyadyuti Dey - Cloud Architect & AI/ML Engineer",
+  "name": "Soumyadyuti Dey Portfolio",
   "short_name": "Soumyadyuti Dey",
   "description": "Professional portfolio of Soumyadyuti Dey - Cloud Architect, AI/ML Engineer, and Cybersecurity Expert",
-  "start_url": "/",
+  "start_url": "/My-Portfolio/",
   "display": "standalone",
   "background_color": "#f8f9ff",
   "theme_color": "#365cff",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "images/S-Logo.jpg",
+      "src": "https://soumo-git-hub.github.io/My-Portfolio/images/Dark_logo.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "images/S-Logo.jpg",
+      "src": "https://soumo-git-hub.github.io/My-Portfolio/images/Dark_logo.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["business", "productivity", "technology"],
+  "categories": ["science", "business", "productivity", "technology"],
   "lang": "en",
   "dir": "ltr"
 } 

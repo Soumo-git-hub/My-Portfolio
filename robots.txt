@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://your-portfolio-url.com/sitemap.xml
+Sitemap: https://soumo-git-hub.github.io/My-Portfolio/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
