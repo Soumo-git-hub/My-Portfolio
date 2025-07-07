@@ -1267,3 +1267,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+// Enhance hamburger menu animation for mobile
+if (window.innerWidth <= 768 && menuicon && navbar) {
+    menuicon.onclick = () => {
+        menuicon.classList.toggle('bx-x');
+        navbar.classList.toggle('active');
+        // Add a little bounce effect
+        if (navbar.classList.contains('active')) {
+            navbar.style.willChange = 'opacity, transform';
+            navbar.style.transition = 'opacity 0.38s cubic-bezier(0.4,0,0.2,1), transform 0.38s cubic-bezier(0.4,0,0.2,1)';
+            navbar.style.opacity = '1';
+            navbar.style.transform = 'translateY(0) scale(1)';
+        } else {
+            navbar.style.opacity = '0';
+            navbar.style.transform = 'translateY(-24px) scale(0.98)';
+        }
+    };
+}

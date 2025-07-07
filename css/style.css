@@ -1004,7 +1004,28 @@ section {
 
 @media (max-width: 768px) {
     #menu-icon {
-        display: block;
+        transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), color 0.3s;
+        cursor: pointer;
+        z-index: 120;
+        position: relative;
+    }
+    #menu-icon.bx-x {
+        transform: rotate(90deg) scale(1.15);
+        color: var(--main-color);
+        transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), color 0.3s;
+    }
+    .navbar {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.38s cubic-bezier(0.4,0,0.2,1), transform 0.38s cubic-bezier(0.4,0,0.2,1);
+        will-change: opacity, transform;
+    }
+    .navbar.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+        transition: opacity 0.38s cubic-bezier(0.4,0,0.2,1), transform 0.38s cubic-bezier(0.4,0,0.2,1);
     }
 
     #darkMode-icon {
@@ -3265,18 +3286,16 @@ body.dark-mode .logo-light { display: none !important; }
     animation-play-state: paused;
     transform: scale(1.13);
     box-shadow: 0 8px 30px var(--shadow-color), 0 0 30px rgba(54, 92, 255, 0.6);
-    background: var(--hover-bg);
-    /* Do not change color here, let the icon keep its color/gradient */
+    background: var(--hover-bg) !important;
+    color: var(--main-color) !important;
 }
 
 .tech-satellite:hover i {
-    transform: scale(1.18);
-    color: var(--main-color); /* Ensure icon stays visible */
-    /* If you use gradients for icons, add them here as well */
-    background: linear-gradient(135deg, var(--main-color), #00d4aa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--main-color) !important;
+    background: linear-gradient(135deg, var(--main-color), #00d4aa) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
 }
 
 .satellite-1 {
@@ -3406,48 +3425,68 @@ body.dark-mode .logo-light { display: none !important; }
     z-index: 9999;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .profession-modal.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
-
 .modal-backdrop {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(20, 30, 50, 0.32);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    transition: background 0.45s cubic-bezier(0.4,0,0.2,1), backdrop-filter 0.45s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
 }
-
 .modal-container {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate(-50%, -50%) scale(0.92);
+    width: 92%;
+    max-width: 540px;
+    max-height: 82vh;
+    background: rgba(255,255,255,0.68);
+    border-radius: 32px;
+    border: 1.5px solid rgba(54,92,255,0.18);
+    box-shadow: 0 12px 48px 0 rgba(54,92,255,0.18), 0 2px 12px 0 rgba(0,0,0,0.10), 0 1.5px 8px rgba(0,0,0,0.08) inset;
+    color: var(--text-color);
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), background 0.45s cubic-bezier(0.4,0,0.2,1);
+    opacity: 0;
+    z-index: 2;
+    backdrop-filter: blur(12px) saturate(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    overflow: hidden;
 }
-
 .profession-modal.active .modal-container {
     transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.45s cubic-bezier(0.4,0,0.2,1);
 }
-
+body.dark-mode .modal-container,
+body.dark-mode .modal-content {
+    background: rgba(20,30,50,0.82) !important;
+    color: var(--text-color) !important;
+    border: 1.5px solid rgba(100,255,218,0.13);
+    box-shadow: 0 12px 48px 0 rgba(100,255,218,0.10), 0 2px 12px 0 rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.10) inset;
+    backdrop-filter: blur(14px) saturate(1.1);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+}
 .modal-content {
-    background: var(--card-bg);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--main-color);
+    background: transparent;
+    border-radius: 32px;
+    box-shadow: none;
+    border: none;
     overflow: hidden;
     position: relative;
 }
-
 .modal-content::before {
     content: '';
     position: absolute;
@@ -3457,135 +3496,127 @@ body.dark-mode .logo-light { display: none !important; }
     height: 4px;
     background: linear-gradient(90deg, var(--main-color), #00d4aa, var(--main-color));
 }
-
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 2rem 1rem;
-    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    padding: 2.2rem 2.2rem 1.2rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.10);
+    background: transparent;
 }
-
 .modal-header h2 {
     color: var(--main-color);
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     margin: 0;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(54,92,255,0.08);
 }
-
 .modal-close {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 2rem;
+    font-size: 2.2rem;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.7rem;
     border-radius: 50%;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 1.5px 8px rgba(54,92,255,0.08);
 }
-
 .modal-close:hover {
-    background: rgba(100, 255, 218, 0.1);
+    background: rgba(100, 255, 218, 0.16);
     color: var(--main-color);
-    transform: rotate(90deg);
+    transform: rotate(90deg) scale(1.13);
 }
-
 .modal-body {
-    padding: 2rem;
+    padding: 2.2rem;
     max-height: 60vh;
     overflow-y: auto;
+    background: transparent;
 }
-
 .profession-icon {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
 }
-
 .profession-icon i {
-    font-size: 4rem;
+    font-size: 4.2rem;
     color: var(--main-color);
     background: linear-gradient(135deg, var(--main-color), #00d4aa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-
 .profession-description {
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
 }
-
 .profession-description p {
     color: var(--text-color);
-    line-height: 1.6;
-    font-size: 1.1rem;
+    line-height: 1.7;
+    font-size: 1.13rem;
     text-align: justify;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.10), 0 0.5px 1px rgba(0,0,0,0.08);
 }
-
 .profession-skills {
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
 }
-
 .profession-skills h3 {
     color: var(--main-color);
     margin-bottom: 1rem;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
-
 .skills-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
 }
-
 .skill-tag {
-    background: rgba(100, 255, 218, 0.1);
+    background: rgba(100, 255, 218, 0.15);
     color: var(--main-color);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.1rem;
     border-radius: 20px;
-    font-size: 0.9rem;
-    border: 1px solid rgba(100, 255, 218, 0.3);
+    font-size: 0.97rem;
+    border: 1px solid rgba(100, 255, 218, 0.22);
     transition: all 0.3s ease;
+    font-weight: 500;
 }
-
 .skill-tag:hover {
     background: var(--main-color);
     color: var(--bg-color);
     transform: translateY(-2px);
 }
-
 .profession-projects h3 {
     color: var(--main-color);
     margin-bottom: 1rem;
-    font-size: 1.3rem;
+    font-size: 1.18rem;
+    font-weight: 600;
 }
-
 .project-links {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-
 .project-link {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: rgba(100, 255, 218, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(100, 255, 218, 0.2);
+    background: rgba(100, 255, 218, 0.10);
+    border-radius: 12px;
+    border: 1px solid rgba(100, 255, 218, 0.18);
     text-decoration: none;
     color: var(--text-color);
     transition: all 0.3s ease;
+    font-weight: 500;
 }
-
 .project-link:hover {
-    background: rgba(100, 255, 218, 0.1);
+    background: rgba(100, 255, 218, 0.18);
     border-color: var(--main-color);
     transform: translateX(5px);
 }
-
 .project-link i {
     color: var(--main-color);
     font-size: 1.5rem;
@@ -4173,6 +4204,7 @@ body.dark-mode .profession-modal .modal-header {
   }
   .home-content h3,
   .home-content h1,
+  .home-content h3,
   .home-content p {
     text-align: center !important;
     margin-left: auto !important;
@@ -4414,4 +4446,329 @@ body.dark-mode .profession-modal .modal-header {
   .about {
     padding-top: 10rem;
   }
+}
+
+/* === Resume Download Modal (Frosted Glass) === */
+.resume-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 25, 47, 0.25);
+  backdrop-filter: blur(2.5px);
+  transition: background 0.3s;
+}
+.resume-modal[style*="display: flex"] {
+  display: flex !important;
+}
+.resume-modal-backdrop {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 25, 47, 0.25);
+  backdrop-filter: blur(2.5px);
+  z-index: 1;
+}
+.resume-modal-container {
+  position: relative;
+  z-index: 2;
+  min-width: 320px;
+  max-width: 95vw;
+  background: var(--glass-bg);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border: 1.5px solid var(--glass-border);
+  padding: 2.5rem 2rem 2rem 2rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.resume-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.resume-modal-header h2 {
+  font-size: 2rem;
+  color: var(--main-color);
+  margin: 0;
+}
+.resume-modal-close {
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  color: var(--main-color);
+  cursor: pointer;
+  padding: 0 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.resume-modal-close:hover, .resume-modal-close:focus {
+  background: var(--hover-bg);
+}
+.resume-modal-body {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  padding: 0.5rem 0 0 0;
+}
+#resume-math-form {
+  margin-top: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#resume-math-answer {
+  font-size: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  outline: none;
+  transition: border 0.2s;
+}
+#resume-math-answer:focus {
+  border: 1.5px solid var(--main-color);
+}
+#resume-math-error {
+  color: var(--error-color);
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+}
+@media (max-width: 600px) {
+  .resume-modal-container {
+    min-width: 0;
+    width: 98vw;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  }
+  .resume-modal-header h2 {
+    font-size: 1.3rem;
+  }
+  .resume-modal-body {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-professions-row .tech-satellite:hover, .mobile-professions-row .tech-satellite:focus, .mobile-professions-row .tech-satellite:active {
+    background: var(--hover-bg) !important;
+    color: var(--main-color) !important;
+    outline: none;
+    transform: scale(1.13);
+  }
+  .mobile-professions-row .tech-satellite:hover i, .mobile-professions-row .tech-satellite:focus i, .mobile-professions-row .tech-satellite:active i {
+    color: var(--main-color) !important;
+    background: linear-gradient(135deg, var(--main-color), #00d4aa) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+}
+
+.profession-modal .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(20, 30, 50, 0.22);
+    backdrop-filter: blur(22px) saturate(1.25);
+    -webkit-backdrop-filter: blur(22px) saturate(1.25);
+    transition: background 0.45s cubic-bezier(0.4,0,0.2,1), backdrop-filter 0.45s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+}
+.profession-modal .modal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
+    width: 94%;
+    max-width: 520px;
+    max-height: 82vh;
+    background: rgba(255,255,255,0.58);
+    border-radius: 36px;
+    border: 1.5px solid rgba(54,92,255,0.13);
+    box-shadow: 0 12px 48px 0 rgba(54,92,255,0.13), 0 2px 12px 0 rgba(0,0,0,0.08), 0 1.5px 8px rgba(0,0,0,0.06) inset;
+    color: var(--text-color);
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), background 0.45s cubic-bezier(0.4,0,0.2,1);
+    opacity: 0;
+    z-index: 2;
+    backdrop-filter: blur(10px) saturate(1.08);
+    -webkit-backdrop-filter: blur(10px) saturate(1.08);
+    overflow: hidden;
+}
+.profession-modal.active .modal-container {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+body.dark-mode .profession-modal .modal-container,
+body.dark-mode .profession-modal .modal-content {
+    background: rgba(20,30,50,0.74) !important;
+    color: var(--text-color) !important;
+    border: 1.5px solid rgba(100,255,218,0.10);
+    box-shadow: 0 12px 48px 0 rgba(100,255,218,0.08), 0 2px 12px 0 rgba(0,0,0,0.13), 0 1.5px 8px rgba(0,0,0,0.08) inset;
+    backdrop-filter: blur(13px) saturate(1.08);
+    -webkit-backdrop-filter: blur(13px) saturate(1.08);
+}
+.profession-modal .modal-content {
+    background: transparent;
+    border-radius: 36px;
+    box-shadow: none;
+    border: none;
+    overflow: hidden;
+    position: relative;
+}
+.profession-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.2rem 2.2rem 1.2rem;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.08);
+    background: transparent;
+}
+.profession-modal .modal-header h2 {
+    color: var(--main-color);
+    font-size: 2.1rem;
+    margin: 0;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(54,92,255,0.06);
+}
+.profession-modal .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 2.2rem;
+    cursor: pointer;
+    padding: 0.7rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1.5px 8px rgba(54,92,255,0.06);
+}
+.profession-modal .modal-close:hover {
+    background: rgba(100, 255, 218, 0.13);
+    color: var(--main-color);
+    transform: rotate(90deg) scale(1.13);
+}
+.profession-modal .modal-body {
+    padding: 2.2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: transparent;
+}
+.profession-modal .profession-icon {
+    text-align: center;
+    margin-bottom: 2.2rem;
+}
+.profession-modal .profession-icon i {
+    font-size: 4.2rem;
+    color: var(--main-color);
+    background: linear-gradient(135deg, var(--main-color), #00d4aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.profession-modal .profession-description {
+    margin-bottom: 2.2rem;
+}
+.profession-modal .profession-description p {
+    color: var(--text-color);
+    line-height: 1.7;
+    font-size: 1.13rem;
+    text-align: justify;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.08), 0 0.5px 1px rgba(0,0,0,0.06);
+}
+.profession-modal .profession-skills {
+    margin-bottom: 2.2rem;
+}
+.profession-modal .profession-skills h3 {
+    color: var(--main-color);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.profession-modal .skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.profession-modal .skill-tag {
+    background: rgba(100, 255, 218, 0.13);
+    color: var(--main-color);
+    padding: 0.5rem 1.1rem;
+    border-radius: 20px;
+    font-size: 0.97rem;
+    border: 1px solid rgba(100, 255, 218, 0.18);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+.profession-modal .skill-tag:hover {
+    background: var(--main-color);
+    color: var(--bg-color);
+    transform: translateY(-2px);
+}
+.profession-modal .profession-projects h3 {
+    color: var(--main-color);
+    margin-bottom: 1rem;
+    font-size: 1.18rem;
+    font-weight: 600;
+}
+.profession-modal .project-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.profession-modal .project-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(100, 255, 218, 0.10);
+    border-radius: 12px;
+    border: 1px solid rgba(100, 255, 218, 0.13);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+.profession-modal .project-link:hover {
+    background: rgba(100, 255, 218, 0.18);
+    border-color: var(--main-color);
+    transform: translateX(5px);
+}
+.profession-modal .project-link i {
+    color: var(--main-color);
+    font-size: 1.5rem;
+}
+
+.profession-modal .modal-container {
+    /* ...existing styles... */
+    box-shadow: 0 12px 48px 0 rgba(54,92,255,0.13), 0 2px 12px 0 rgba(0,0,0,0.08), 0 1.5px 8px rgba(0,0,0,0.06) inset,
+        0 0 0 4px rgba(100,255,218,0.18), 0 0 16px 2px #64ffda;
+    /* The last two shadows add a soft glow */
+}
+body.dark-mode .profession-modal .modal-container {
+    /* ...existing styles... */
+    box-shadow: 0 12px 48px 0 rgba(100,255,218,0.08), 0 2px 12px 0 rgba(0,0,0,0.13), 0 1.5px 8px rgba(0,0,0,0.08) inset,
+        0 0 0 4px rgba(100,255,218,0.22), 0 0 18px 3px #64ffda;
+}
+
+@media (max-width: 768px) {
+  #menu-icon {
+    display: block !important;
+  }
+}
+
+.logo-img {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
 }
