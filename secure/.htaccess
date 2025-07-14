@@ -1,0 +1,24 @@
+# Block direct access to secure directory
+Order Deny,Allow
+Deny from all
+
+# Only allow access from specific referrers (your portfolio)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?soumo-git-hub\.github\.io/My-Portfolio [NC]
+    RewriteCond %{HTTP_REFERER} !^https?://localhost [NC]
+    RewriteCond %{HTTP_REFERER} !^https?://127\.0\.0\.1 [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# Block access to all files in this directory
+<Files "*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Block access to PDF files specifically
+<Files "*.pdf">
+    Order Deny,Allow
+    Deny from all
+</Files> 

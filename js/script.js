@@ -1166,7 +1166,7 @@ function allowDefaultLinks() {
     }, 0);
 }
 
-// === Resume Download Barrier (with debug logging) ===
+// === Resume Download Barrier (simple math, force download, no web view) ===
 document.addEventListener('DOMContentLoaded', function() {
   const resumeBtn = document.getElementById('resume-download-btn');
   const modal = document.getElementById('resume-modal');
@@ -1176,9 +1176,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const mathAnswer = document.getElementById('resume-math-answer');
   const mathError = document.getElementById('resume-math-error');
   let correctAnswer = null;
+  let attempts = 0;
+  const maxAttempts = 3;
+  let isDownloading = false;
 
+  // Simple math question
   function generateMathQuestion() {
-    // Simple random math: a + b, a - b, or a * b
     const a = Math.floor(Math.random() * 10) + 1;
     const b = Math.floor(Math.random() * 10) + 1;
     const op = ['+', '-', '*'][Math.floor(Math.random() * 3)];
@@ -1191,58 +1194,83 @@ document.addEventListener('DOMContentLoaded', function() {
     mathAnswer.value = '';
     mathError.textContent = '';
     setTimeout(() => mathAnswer.focus(), 100);
-    console.log('[Resume Modal] Generated question:', q, 'Answer:', ans);
   }
 
-  if (!resumeBtn) { console.error('[Resume Modal] resume-download-btn not found!'); return; }
-  if (!modal) { console.error('[Resume Modal] resume-modal not found!'); return; }
-  if (!closeBtn) { console.error('[Resume Modal] resume-modal-close not found!'); return; }
-  if (!mathForm) { console.error('[Resume Modal] resume-math-form not found!'); return; }
-  if (!mathQuestion) { console.error('[Resume Modal] resume-math-question not found!'); return; }
-  if (!mathAnswer) { console.error('[Resume Modal] resume-math-answer not found!'); return; }
-  if (!mathError) { console.error('[Resume Modal] resume-math-error not found!'); return; }
+  if (!resumeBtn || !modal || !closeBtn || !mathForm || !mathQuestion || !mathAnswer || !mathError) return;
 
   resumeBtn.addEventListener('click', function(e) {
     e.preventDefault();
+    if (isDownloading) return;
+    attempts = 0;
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     generateMathQuestion();
-    console.log('[Resume Modal] Modal opened');
   });
+
   closeBtn.addEventListener('click', function() {
     modal.style.display = 'none';
     document.body.style.overflow = '';
-    console.log('[Resume Modal] Modal closed (button)');
+    attempts = 0;
+    isDownloading = false;
   });
+
   modal.addEventListener('click', function(e) {
     if (e.target === modal) {
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      console.log('[Resume Modal] Modal closed (backdrop)');
+      attempts = 0;
+      isDownloading = false;
     }
   });
-  mathForm.addEventListener('submit', function(e) {
+
+  mathForm.addEventListener('submit', async function(e) {
     e.preventDefault();
+    if (isDownloading) return;
+    attempts++;
     const userAns = parseInt(mathAnswer.value.trim(), 10);
     if (userAns === correctAnswer) {
-      mathError.textContent = '';
-      // Trigger download in a safe way
-      const link = document.createElement('a');
-      link.href = 'images/myresume.pdf';
-      link.download = 'Soumyadyuti_Dey_Resume.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      modal.style.display = 'none';
-      document.body.style.overflow = '';
-      console.log('[Resume Modal] Correct answer, download triggered');
+      isDownloading = true;
+      mathError.textContent = 'Preparing download...';
+      try {
+        // Only fetch and download the PDF after passing the math check
+        const response = await fetch('secure/resume.pdf');
+        if (!response.ok) throw new Error('Failed to fetch resume');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'Soumyadyuti_Dey_Resume.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        attempts = 0;
+        isDownloading = false;
+        mathError.textContent = '';
+      } catch (error) {
+        mathError.textContent = 'Download failed. Please try again.';
+        isDownloading = false;
+      }
     } else {
-      mathError.textContent = 'Incorrect answer. Please try again.';
-      mathAnswer.focus();
-      console.log('[Resume Modal] Incorrect answer:', mathAnswer.value, 'Expected:', correctAnswer);
+      if (attempts >= maxAttempts) {
+        mathError.textContent = 'Too many incorrect attempts. Please try again later.';
+        setTimeout(() => {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+          attempts = 0;
+          isDownloading = false;
+        }, 2000);
+      } else {
+        mathError.textContent = `Incorrect answer. ${maxAttempts - attempts} attempts remaining.`;
+        mathAnswer.focus();
+        generateMathQuestion();
+      }
     }
   });
-  // Trap focus in modal for accessibility
+
   modal.addEventListener('keydown', function(e) {
     if (e.key === 'Tab') {
       const focusable = modal.querySelectorAll('button, input');
@@ -1263,7 +1291,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Escape') {
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      console.log('[Resume Modal] Modal closed (Escape)');
+      attempts = 0;
+      isDownloading = false;
     }
   });
 });
@@ -1285,3 +1314,42 @@ if (window.innerWidth <= 768 && menuicon && navbar) {
         }
     };
 }
+
+// === Show More Projects Logic ===
+document.addEventListener('DOMContentLoaded', function() {
+    const showMoreBtn = document.getElementById('show-more-projects-btn');
+    const extraProjects = document.querySelectorAll('.portfolio-box.extra-project');
+    let expanded = false;
+    if (showMoreBtn && extraProjects.length > 0) {
+        showMoreBtn.addEventListener('click', function() {
+            if (!expanded) {
+                extraProjects.forEach((card, i) => {
+                    card.style.display = 'block';
+                    card.style.opacity = 0;
+                    card.style.animation = 'fadeIn 0.7s ease-in-out forwards';
+                    card.style.animationDelay = (i * 0.1) + 's';
+                });
+                showMoreBtn.textContent = 'Show Less';
+                expanded = true;
+            } else {
+                extraProjects.forEach((card) => {
+                    card.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                        card.style.opacity = 1;
+                        card.style.animation = '';
+                    }, 500);
+                });
+                showMoreBtn.textContent = 'Show More';
+                expanded = false;
+            }
+        });
+    }
+});
+
+// Add fadeOut keyframes if not present
+(function() {
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }`;
+    document.head.appendChild(style);
+})();

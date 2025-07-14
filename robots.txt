@@ -7,11 +7,7 @@ Sitemap: https://soumo-git-hub.github.io/My-Portfolio/sitemap.xml
 # Crawl-delay
 Crawl-delay: 1
 
-# Disallow specific files
-Disallow: /css/
-Disallow: /js/
-Disallow: /images/
-Disallow: *.pdf
+# Disallow sensitive files (if any)
 Disallow: *.zip
 Disallow: *.rar
 
