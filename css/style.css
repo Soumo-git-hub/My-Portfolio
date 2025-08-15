@@ -2030,9 +2030,30 @@ html {
 }
 
 .skill-logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    display: flex;
     gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-color) transparent;
+}
+
+.skill-logos::-webkit-scrollbar {
+    height: 6px;
+}
+
+.skill-logos::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+}
+
+.skill-logos::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+    border-radius: 3px;
+}
+
+.skill-logos::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
 }
 
 .skill-logo {
@@ -2045,6 +2066,8 @@ html {
     background: var(--hover-bg);
     transition: all 0.3s ease;
     border: 0.1rem solid var(--glass-border);
+    min-width: 12rem;
+    flex-shrink: 0;
 }
 
 .skill-logo:hover {
@@ -2320,8 +2343,13 @@ html {
     }
     
     .skill-logos {
-        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
         gap: 1.5rem;
+        padding: 0.5rem 0;
+    }
+    
+    .skill-logo {
+        min-width: 10rem;
+        padding: 1.5rem;
     }
     
     .timeline-container::before {
@@ -2363,6 +2391,7 @@ html {
     
     .skill-logo {
         padding: 1.5rem;
+        min-width: 8rem;
     }
     
     .skill-logo img {
@@ -2544,9 +2573,30 @@ html {
 }
 
 .skill-logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    display: flex;
     gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-color) transparent;
+}
+
+.skill-logos::-webkit-scrollbar {
+    height: 4px;
+}
+
+.skill-logos::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2px;
+}
+
+.skill-logos::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+    border-radius: 2px;
+}
+
+.skill-logos::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
 }
 
 .skill-logo {
@@ -2559,6 +2609,8 @@ html {
     border-radius: 1rem;
     transition: all 0.3s ease;
     border: 1px solid transparent;
+    min-width: 8rem;
+    flex-shrink: 0;
 }
 
 .skill-logo:hover {
