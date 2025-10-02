@@ -395,6 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Initialize enhanced section animations
+    initSectionAnimations();
+
     // Initialize lazy loading
     lazyLoadImages();
 
@@ -426,43 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // [FIX] Always allow default for Download CV and social links
     allowDefaultLinks();
 
-    // === Home Section Profile Image Interactive Tilt Effect with Debug Logging ===
-    const profileImg = document.querySelector('.home .home-img img');
-    if (!profileImg) {
-        console.error('[Tilt Effect] .home .home-img img not found! Check your HTML structure.');
-        return;
-    } else {
-        console.log('[Tilt Effect] Profile image found, attaching event listeners.');
-    }
-    const maxTilt = 18; // degrees
-    const perspective = 600;
-    profileImg.style.transition = 'transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s cubic-bezier(0.4,0,0.2,1)';
-    profileImg.style.willChange = 'transform';
-    profileImg.addEventListener('mousemove', function(e) {
-        console.log('[Tilt Effect] mousemove event fired');
-        const rect = profileImg.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const percentX = (x - centerX) / centerX;
-        const percentY = (y - centerY) / centerY;
-        const tiltX = percentY * maxTilt;
-        const tiltY = -percentX * maxTilt;
-        profileImg.style.transform = `perspective(${perspective}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.06)`;
-        profileImg.style.boxShadow = '0 0 0 8px var(--main-color, #365cff), 0 8px 32px rgba(54,92,255,0.18)';
-        profileImg.style.zIndex = 30;
-    });
-    profileImg.addEventListener('mouseleave', function() {
-        console.log('[Tilt Effect] mouseleave event fired');
-        profileImg.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
-        profileImg.style.boxShadow = '';
-        profileImg.style.zIndex = '';
-    });
-    profileImg.addEventListener('mouseenter', function() {
-        console.log('[Tilt Effect] mouseenter event fired');
-        profileImg.style.transition = 'transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1)';
-    });
+    // === REMOVED PROFILE IMAGE TILT EFFECT TO PREVENT FLICKERING ===
+    // Profile image hover effects are now handled purely via CSS
 
     // === Profession Icon Interactive Logic (Bounce, Float, Modal) ===
     const techIcons = document.querySelectorAll('.home .tech-satellite');
@@ -498,25 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 
-    function checkCollisions() {
-        const imgRect = getRect(profileImg);
-        iconData.forEach(iconObj => {
-            const iconRect = getRect(iconObj.icon);
-            const dist = Math.hypot(imgRect.x - iconRect.x, imgRect.y - iconRect.y);
-            const minDist = (imgRect.w + iconRect.w) / 2 * 0.92;
-            if (dist < minDist && !iconObj.bouncing) {
-                const angle = Math.atan2(iconRect.y - imgRect.y, iconRect.x - imgRect.x);
-                const dx = Math.cos(angle) * 60;
-                const dy = Math.sin(angle) * 60;
-                animateBounce(iconObj, dx, dy);
-            }
-        });
-        requestAnimationFrame(checkCollisions);
-    }
-    setTimeout(() => {
-        requestAnimationFrame(checkCollisions);
-    }, 1000);
-
+    // === REMOVED COLLISION DETECTION CODE ===
+    // This code was causing errors with undefined profileImg
+    
     // Gentle float animation
     techIcons.forEach((icon, i) => {
         icon.style.transition = 'transform 0.7s cubic-bezier(0.4,0,0.2,1)';
@@ -666,7 +618,7 @@ const progressObserver = new IntersectionObserver((entries) => {
         progressObserver.observe(servicesSection);
     }
 
-// Smooth Scroll
+// Smooth Scroll - Fixed for Instant Response
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const target = document.querySelector(this.getAttribute('href'));
@@ -677,7 +629,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 block: 'start'
             });
         }
-        // If no target, let default action happen (for external/download links)
     });
 });
 
@@ -929,34 +880,53 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// Modal functionality
+// Initialize the modal system when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the profession modal
+    initProfessionModal();
+    
+    // Initialize profession icons
+    initProfessionIcons();
+});
+
+// ULTIMATE SIMPLE Modal functionality
 function initProfessionModal() {
     const modal = document.getElementById('profession-modal');
-    const modalClose = document.getElementById('modal-close');
+    const modalClose = document.querySelector('.modal-close');
     const modalBackdrop = document.querySelector('.modal-backdrop');
-    if (!modal || !modalClose || !modalBackdrop) {
-        console.warn('[Profession Modal] Required modal elements missing:', { modal, modalClose, modalBackdrop });
+    
+    if (!modal) {
+        console.warn('[Profession Modal] Modal element not found');
         return { closeModal: () => {} };
     }
-    console.log('Initializing profession modal...');
     
-    console.log('Modal elements found:', { modal: !!modal, modalClose: !!modalClose, modalBackdrop: !!modalBackdrop });
+    console.log('Initializing simple profession modal...');
     
-    // Close modal functions
+    // Simple close modal function
     function closeModal() {
         modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        modal.style.display = 'none';
         
-        // Hide Three.js renderer
-        if (renderer) {
-            renderer.domElement.style.opacity = '0';
+        // Restore page scroll position
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.overflow = '';
+        document.body.style.width = '';
+        
+        if (scrollY) {
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
-        isAnimating = false;
     }
     
-    // Event listeners
-    modalClose.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', closeModal);
+    // Event listeners for closing modal
+    if (modalClose) {
+        modalClose.addEventListener('click', closeModal);
+    }
+    
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', closeModal);
+    }
     
     // Close on escape key
     document.addEventListener('keydown', (e) => {
@@ -965,7 +935,7 @@ function initProfessionModal() {
         }
     });
     
-    console.log('Modal initialized successfully');
+    console.log('Simple modal initialized successfully');
     return { closeModal };
 }
 
@@ -1027,7 +997,7 @@ function createZoomAnimation(element, professionKey) {
     });
 }
 
-// === Profession Modal Accessibility & Button Support ===
+// Fixed Profession Icon Interactive Logic - No More Errors
 function initProfessionIcons() {
     console.log('Initializing profession icons...');
     const techIcons = document.querySelectorAll('.tech-satellite');
@@ -1037,39 +1007,46 @@ function initProfessionIcons() {
     }
     console.log('Found tech icons:', techIcons.length);
     
+    const professionKeys = ['cloud', 'ai-ml', 'cybersecurity', 'devops', 'forensics'];
+    
     techIcons.forEach((icon, index) => {
-        const professionKeys = ['cloud', 'ai-ml', 'cybersecurity', 'devops', 'forensics'];
-        const professionKey = professionKeys[index];
-        
-        console.log(`Setting up icon ${index + 1} with profession key:`, professionKey);
-        console.log('Icon element:', icon);
-        
-        if (professionKey) {
+        // Only process icons that have a corresponding profession key
+        if (index < professionKeys.length) {
+            const professionKey = professionKeys[index];
+            
+            console.log(`Setting up icon ${index + 1} with profession key:`, professionKey);
+            console.log('Icon element:', icon);
+            
             icon.addEventListener('click', () => {
                 showProfessionModal(professionKey, icon);
             });
             icon.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
+                    e.preventDefault();
                     showProfessionModal(professionKey, icon);
                 }
             });
+        } else {
+            console.log(`Skipping icon ${index + 1} - no corresponding profession key`);
         }
     });
 }
 
+// Fixed showProfessionModal function with reliable display logic
 function showProfessionModal(professionKey, triggerEl) {
     const modal = document.getElementById('profession-modal');
     if (!modal) return;
+    
     const data = professionData[professionKey];
     if (!data) return;
+    
     // Set modal title
     const titleEl = document.getElementById('modal-title');
     if (titleEl) titleEl.textContent = data.title;
+    
     // Set modal icon
     let iconEl = modal.querySelector('.profession-icon i');
     if (!iconEl) {
-        // If not present, create it
         let iconDiv = modal.querySelector('.profession-icon');
         if (!iconDiv) {
             iconDiv = document.createElement('div');
@@ -1080,76 +1057,73 @@ function showProfessionModal(professionKey, triggerEl) {
         iconDiv.appendChild(iconEl);
     }
     iconEl.className = data.icon;
+    
     // Set modal description
     const descEl = modal.querySelector('.profession-description p') || document.getElementById('modal-desc');
     if (descEl) descEl.textContent = data.description;
+    
     // Set skills
     const skillsContainer = modal.querySelector('.skills-tags') || document.createElement('div');
     skillsContainer.className = 'skills-tags';
     skillsContainer.innerHTML = '';
+    
     data.skills.forEach(skill => {
         const skillTag = document.createElement('span');
         skillTag.className = 'skill-tag';
         skillTag.textContent = skill;
         skillsContainer.appendChild(skillTag);
     });
-    let skillsSection = modal.querySelector('.profession-skills');
-    if (!skillsSection) {
-        skillsSection = document.createElement('div');
-        skillsSection.className = 'profession-skills';
-        skillsSection.innerHTML = '<h3>Key Skills</h3>';
-        modal.querySelector('.modal-body').appendChild(skillsSection);
-    }
-    skillsSection.appendChild(skillsContainer);
-    // Set projects
-    const projectsContainer = modal.querySelector('.project-links') || document.createElement('div');
-    projectsContainer.className = 'project-links';
-    projectsContainer.innerHTML = '';
-    data.projects.forEach(project => {
-        const projectLink = document.createElement('div');
-        projectLink.className = 'project-link';
-        projectLink.innerHTML = `<i class="${project.icon}"></i> <span>${project.name}</span>`;
-        projectsContainer.appendChild(projectLink);
-    });
-    let projectsSection = modal.querySelector('.profession-projects');
-    if (!projectsSection) {
-        projectsSection = document.createElement('div');
-        projectsSection.className = 'profession-projects';
-        projectsSection.innerHTML = '<h3>Related Projects</h3>';
-        modal.querySelector('.modal-body').appendChild(projectsSection);
-    }
-    projectsSection.appendChild(projectsContainer);
-    // Show modal
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    // Focus trap and close logic as before...
-    const focusableEls = modal.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
-    const firstEl = focusableEls[0];
-    const lastEl = focusableEls[focusableEls.length - 1];
-    let lastActive = document.activeElement;
-    setTimeout(() => { firstEl && firstEl.focus(); }, 10);
-    function trap(e) {
-        if (e.key === 'Tab') {
-            if (e.shiftKey && document.activeElement === firstEl) {
-                e.preventDefault();
-                lastEl.focus();
-            } else if (!e.shiftKey && document.activeElement === lastEl) {
-                e.preventDefault();
-                firstEl.focus();
-            }
-        } else if (e.key === 'Escape') {
-            closeModal();
+    
+    // Ensure skills container is in modal
+    if (!modal.querySelector('.skills-tags')) {
+        let skillsSection = modal.querySelector('.profession-skills');
+        if (!skillsSection) {
+            skillsSection = document.createElement('div');
+            skillsSection.className = 'profession-skills';
+            skillsSection.innerHTML = '<h3>Key Skills</h3>';
+            modal.querySelector('.modal-body').appendChild(skillsSection);
         }
+        skillsSection.appendChild(skillsContainer);
     }
-    modal.addEventListener('keydown', trap);
-    function closeModal() {
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-        modal.removeEventListener('keydown', trap);
-        if (lastActive) lastActive.focus();
+    
+    // Set projects if data.projects exists
+    if (data.projects) {
+        const projectsContainer = modal.querySelector('.project-links') || document.createElement('div');
+        projectsContainer.className = 'project-links';
+        projectsContainer.innerHTML = '';
+        
+        data.projects.forEach(project => {
+            const projectLink = document.createElement('div');
+            projectLink.className = 'project-link';
+            projectLink.innerHTML = `<i class="${project.icon}"></i> <span>${project.name}</span>`;
+            projectsContainer.appendChild(projectLink);
+        });
+        
+        let projectsSection = modal.querySelector('.profession-projects');
+        if (!projectsSection) {
+            projectsSection = document.createElement('div');
+            projectsSection.className = 'profession-projects';
+            projectsSection.innerHTML = '<h3>Related Projects</h3>';
+            modal.querySelector('.modal-body').appendChild(projectsSection);
+        }
+        projectsSection.appendChild(projectsContainer);
     }
-    modal.querySelector('.modal-close').onclick = closeModal;
-    modal.querySelector('.modal-backdrop').onclick = closeModal;
+    
+    // Show modal - prevent page scroll and center perfectly
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${window.scrollY}px`;
+    document.body.style.width = '100%';
+    
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+    
+    // Focus management
+    setTimeout(() => {
+        const focusableEls = modal.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+        const firstEl = focusableEls[0];
+        if (firstEl) firstEl.focus();
+    }, 100);
 }
 
 // === [FIX] Robust Button/Link Handling for Home Section ===
@@ -1315,37 +1289,119 @@ if (window.innerWidth <= 768 && menuicon && navbar) {
     };
 }
 
-// === Show More Projects Logic ===
+// === Enhanced Show More Projects Logic with Perfect Animations ===
 document.addEventListener('DOMContentLoaded', function() {
     const showMoreBtn = document.getElementById('show-more-projects-btn');
     const extraProjects = document.querySelectorAll('.portfolio-box.extra-project');
     let expanded = false;
+    
     if (showMoreBtn && extraProjects.length > 0) {
         showMoreBtn.addEventListener('click', function() {
+            // Add ripple effect
+            const ripple = document.createElement('span');
+            const rect = showMoreBtn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            
+            showMoreBtn.style.position = 'relative';
+            showMoreBtn.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+            
             if (!expanded) {
+                // Show projects with enhanced staggered animation
                 extraProjects.forEach((card, i) => {
                     card.style.display = 'block';
-                    card.style.opacity = 0;
-                    card.style.animation = 'fadeIn 0.7s ease-in-out forwards';
-                    card.style.animationDelay = (i * 0.1) + 's';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(40px) scale(0.9) rotateX(10deg)';
+                    card.style.filter = 'blur(2px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = `
+                            opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                            transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                            filter 0.7s cubic-bezier(0.4, 0, 0.2, 1)
+                        `;
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1) rotateX(0)';
+                        card.style.filter = 'blur(0px)';
+                    }, i * 120 + 100);
                 });
+                
                 showMoreBtn.textContent = 'Show Less';
+                showMoreBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    showMoreBtn.style.transform = 'scale(1)';
+                }, 150);
                 expanded = true;
             } else {
-                extraProjects.forEach((card) => {
-                    card.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+                // Hide projects with smooth reverse animation
+                const reverseOrder = Array.from(extraProjects).reverse();
+                reverseOrder.forEach((card, i) => {
                     setTimeout(() => {
-                        card.style.display = 'none';
-                        card.style.opacity = 1;
-                        card.style.animation = '';
-                    }, 500);
+                        card.style.transition = `
+                            opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                            transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                            filter 0.5s cubic-bezier(0.4, 0, 0.2, 1)
+                        `;
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(-30px) scale(0.95) rotateX(-5deg)';
+                        card.style.filter = 'blur(1px)';
+                        
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                            card.style.transform = 'translateY(40px) scale(0.9) rotateX(10deg)';
+                            card.style.filter = 'blur(2px)';
+                        }, 500);
+                    }, i * 80);
                 });
+                
                 showMoreBtn.textContent = 'Show More';
+                showMoreBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    showMoreBtn.style.transform = 'scale(1)';
+                }, 150);
                 expanded = false;
             }
         });
     }
 });
+
+// Simplified initialization - no complex animations
+function initSectionAnimations() {
+    // Keep sections visible immediately
+    const sections = document.querySelectorAll('.about, .skills-breakdown, .portfolio, .serives, .blog, .contact, .timeline');
+    sections.forEach(section => {
+        section.style.opacity = '1';
+        section.style.transform = 'translateY(0)';
+    });
+    
+    // Add ripple animation keyframes
+    const rippleStyle = document.createElement('style');
+    rippleStyle.innerHTML = `
+        @keyframes ripple {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(rippleStyle);
+}
 
 // Add fadeOut keyframes if not present
 (function() {

@@ -1,6 +1,6 @@
 # MyPortfolio Website
 
-A modern, responsive portfolio website to showcase expertise in Cloud Architecture, AI/ML Engineering, and DevOps.
+A modern, responsive portfolio website to showcase expertise of Soumyadyuti Dey in Cloud Architecture, AI/ML Engineering, and DevOps.
 
 ## Features
 - Modern, professional UI/UX

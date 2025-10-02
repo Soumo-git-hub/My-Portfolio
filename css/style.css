@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
 
+/* Performance Optimizations */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +11,20 @@
     outline: none;
     scroll-behavior: smooth;
     font-family: "Poppins", sans-serif;
-    /* transition: all 5s linear; */
+    /* Performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* GPU Acceleration for animations */
+.portfolio-box,
+.services-box,
+.skill-logo,
+.btn {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 :root {
@@ -514,9 +528,33 @@ section {
     -ms-flex-align: center;
     align-items: center;
     gap: 2.5rem;
+    perspective: 1000px;
 }
 
-.portfolio .portfolio-box {
+/* Enhanced Portfolio Animation */
+@keyframes portfolioSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) rotateX(10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.portfolio-box {
+    animation: portfolioSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.portfolio-box:nth-child(1) { animation-delay: 0.1s; }
+.portfolio-box:nth-child(2) { animation-delay: 0.2s; }
+.portfolio-box:nth-child(3) { animation-delay: 0.3s; }
+.portfolio-box:nth-child(4) { animation-delay: 0.4s; }
+.portfolio-box:nth-child(5) { animation-delay: 0.5s; }
+.portfolio-box:nth-child(6) { animation-delay: 0.6s; }
+
+.portfolio-box {
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -524,20 +562,28 @@ section {
     border-radius: 1.5rem;
     overflow: hidden;
     box-shadow: 0 4px 20px var(--shadow-color);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate3d(0, 0, 0); /* GPU acceleration */
+    opacity: 1;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+.portfolio-box:hover {
+    transform: translate3d(0, -8px, 0) scale(1.02);
+    box-shadow: 0 12px 35px var(--shadow-color);
 }
 
 .portfolio-box img {
     width: 100%;
-    -webkit-transition: 0.5s ease;
-    -o-transition: 0.5s ease;
-    transition: 0.5s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(1);
+    will-change: transform;
 }
 
 .portfolio-box:hover img {
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .portfolio-box .portfolio-layers {
@@ -557,20 +603,39 @@ section {
     text-align: center;
     padding: 2rem;
     transform: translateY(100%);
-    transition: all 0.5s ease;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(2px);
+    opacity: 0;
 }
 
 .portfolio-box:hover .portfolio-layers {
     transform: translateY(0);
+    opacity: 1;
 }
 
 .portfolio-layers h4 {
     font-size: 3rem;
+    color: var(--white-color);
+    margin-bottom: 1rem;
+    transform: translateY(20px);
+    transition: transform 0.3s ease 0.1s;
+}
+
+.portfolio-box:hover .portfolio-layers h4 {
+    transform: translateY(0);
 }
 
 .portfolio-layers p {
     font-size: 1.6rem;
     margin: 0.3rem 0 1rem;
+    color: var(--white-color);
+    opacity: 0.9;
+    transform: translateY(20px);
+    transition: transform 0.3s ease 0.2s;
+}
+
+.portfolio-box:hover .portfolio-layers p {
+    transform: translateY(0);
 }
 
 .portfolio-layers a {
@@ -587,11 +652,28 @@ section {
     height: 5rem;
     background: var(--white-color);
     border-radius: 50%;
+    transform: translateY(20px) scale(0.8);
+    transition: all 0.3s ease 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.portfolio-box:hover .portfolio-layers a {
+    transform: translateY(0) scale(1);
+}
+
+.portfolio-layers a:hover {
+    transform: translateY(0) scale(1.1);
+    background: var(--secondary-color);
 }
 
 .portfolio-layers a i {
     font-size: 2rem;
     color: var(--main-color);
+    transition: color 0.3s ease;
+}
+
+.portfolio-layers a:hover i {
+    color: var(--white-color);
 }
 
 .testimonial-container {
@@ -1274,9 +1356,24 @@ section {
     }
 }
 
-/* Smooth Scroll Animation */
+/* Enhanced Native Smooth Scrolling */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    scroll-behavior: smooth !important;
+    max-width: 100vw !important;
+    position: relative !important;
+}
+
+/* Prevent any element from causing horizontal overflow */
+* {
+    max-width: 100vw;
+    box-sizing: border-box !important;
 }
 
 /* Text Gradient Animation */
@@ -2036,24 +2133,30 @@ html {
     padding: 1rem 0;
     scrollbar-width: thin;
     scrollbar-color: var(--main-color) transparent;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 .skill-logos::-webkit-scrollbar {
-    height: 6px;
+    height: 8px;
 }
 
 .skill-logos::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 3px;
+    background: var(--bg-color);
+    border-radius: 10px;
+    margin: 0 1rem;
 }
 
 .skill-logos::-webkit-scrollbar-thumb {
-    background: var(--main-color);
-    border-radius: 3px;
+    background: linear-gradient(90deg, var(--main-color), var(--secondary-color));
+    border-radius: 10px;
+    border: 2px solid var(--bg-color);
+    transition: all 0.3s ease;
 }
 
 .skill-logos::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-color);
+    background: linear-gradient(90deg, var(--secondary-color), var(--main-color));
+    transform: scale(1.1);
 }
 
 .skill-logo {
@@ -2061,13 +2164,68 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 2rem;
+    padding: 2rem 1.5rem;
     border-radius: 1.5rem;
-    background: var(--hover-bg);
-    transition: all 0.3s ease;
-    border: 0.1rem solid var(--glass-border);
+    background: var(--card-bg);
+    border: 2px solid transparent;
     min-width: 12rem;
     flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.skill-logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--main-color), var(--secondary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.skill-logo:hover {
+    transform: translateY(-8px) scale(1.05);
+    border-color: var(--main-color);
+    box-shadow: 0 12px 30px var(--shadow-color);
+}
+
+.skill-logo:hover::before {
+    opacity: 0.1;
+}
+
+.skill-logo img {
+    width: 4.5rem;
+    height: 4.5rem;
+    object-fit: contain;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+}
+
+.skill-logo:hover img {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+}
+
+.skill-logo span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.skill-logo:hover span {
+    color: var(--main-color);
+    transform: translateY(-2px);
+    text-shadow: 0 2px 4px rgba(54, 92, 255, 0.3);
 }
 
 .skill-logo:hover {
@@ -2408,60 +2566,6 @@ html {
     .testimonial-content p {
         font-size: 1.6rem;
     }
-}
-
-/* Enhanced Skills Summary Section */
-.skills-summary {
-    margin-top: 4rem;
-    padding: 3rem;
-    background: var(--card-bg);
-    border-radius: 1.5rem;
-    box-shadow: 0 10px 30px var(--shadow-color);
-    border: 1px solid var(--border-color);
-}
-
-.skills-summary h3 {
-    font-size: 2.4rem;
-    color: var(--text-color);
-    margin-bottom: 2rem;
-    text-align: center;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.skill-group {
-    padding: 1.5rem;
-    background: var(--hover-bg);
-    border-radius: 1rem;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-}
-
-.skill-group:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px var(--shadow-color);
-    border-color: var(--main-color);
-}
-
-.skill-group h4 {
-    font-size: 1.8rem;
-    color: var(--main-color);
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-.skill-group p {
-    font-size: 1.4rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
 }
 
 /* Education Info in About Section */
@@ -3377,12 +3481,6 @@ body.dark-mode .logo-light { display: none !important; }
     }
 }
 
-/* Interactive hover effects */
-.home-img:hover {
-    transform: scale(1.03) !important;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .image-background-shape {
@@ -3419,89 +3517,211 @@ body.dark-mode .logo-light { display: none !important; }
     z-index: 10;
 }
 
+/* Tech Orbit Container - Properly Centered Around Profile */
+.tech-orbit {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    width: 42rem;
+    height: 42rem;
+    transform: translateY(-50%);
+    z-index: 5;
+    pointer-events: none;
+    /* Debug: uncomment to see orbit boundary */
+    /* border: 2px dashed rgba(54, 92, 255, 0.3); */
+    border-radius: 50%;
+}
+
+/* Fixed Tech Satellites - Prevent Flickering with Profile Image */
 .tech-satellite {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    background: var(--bg-color);
+    width: 55px;
+    height: 55px;
+    background: var(--card-bg);
     border: 2px solid var(--main-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: var(--main-color);
-    animation: bubbleFloat 12s ease-in-out infinite;
-    box-shadow: 0 0 20px rgba(54, 92, 255, 0.3);
-    backdrop-filter: blur(10px);
+    cursor: pointer;
     pointer-events: auto;
     z-index: 11;
-    cursor: pointer;
-    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), background 0.35s cubic-bezier(0.4,0,0.2,1), color 0.35s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.25s ease,
+                border-color 0.25s ease;
+    box-shadow: 0 6px 20px rgba(54, 92, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: satelliteFloat 8s ease-in-out infinite;
+    /* Performance optimizations and isolation */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    isolation: isolate;
+    contain: layout style paint;
+}
+
+@keyframes satelliteFloat {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        box-shadow: 0 6px 20px rgba(54, 92, 255, 0.2);
+    }
+    50% {
+        transform: translate3d(0, -12px, 0) scale(1.02);
+        box-shadow: 0 10px 30px rgba(54, 92, 255, 0.3);
+    }
+}
+
+/* Optimized hover with better color contrast and no blending */
+.tech-satellite:hover {
+    animation-play-state: paused;
+    transform: translate3d(0, -5px, 0) scale(1.15);
+    box-shadow: 0 12px 35px rgba(54, 92, 255, 0.4);
+    background: var(--white-color) !important;
+    border: 2px solid var(--main-color) !important;
+    color: var(--main-color) !important;
+    /* Remove any gradient blending */
+    background-image: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure icon stays visible on hover with solid colors */
+.tech-satellite:hover i {
+    color: var(--main-color) !important;
+    transform: scale(1.1);
+    text-shadow: none !important;
+    background: transparent !important;
+    background-image: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: var(--main-color) !important;
+    background-clip: initial !important;
+}
+
+/* Enhanced active state for clear click feedback */
+.tech-satellite:active {
+    transform: translate3d(0, -1px, 0) scale(1.08) !important;
+    background: var(--main-color) !important;
+    color: var(--white-color) !important;
+    border-color: var(--main-color) !important;
+    box-shadow: 0 6px 20px rgba(54, 92, 255, 0.6) !important;
+    transition: all 0.15s ease !important;
+}
+
+/* Active state icon color */
+.tech-satellite:active i {
+    color: var(--white-color) !important;
+    transform: scale(1.05) !important;
+    background: transparent !important;
+    background-image: none !important;
+    -webkit-text-fill-color: var(--white-color) !important;
+}
+
+/* Critical Performance Optimizations for Fast Loading */
+
+/* Preload critical fonts and resources */
+html {
+    font-display: swap; /* Ensure text remains visible during font swap */
+}
+
+/* Optimize image loading */
+img {
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+}
+
+/* Optimize large sections */
+.portfolio-container,
+.services-container,
+.blog-container {
+    content-visibility: auto;
+    contain-intrinsic-size: 1200px 800px;
+}
+
+/* Reduce layout thrashing */
+.portfolio-box,
+.services-box,
+.blog-box {
+    contain: layout style paint;
+}
+
+/* Optimize scrolling performance */
+body {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+}
+
+/* Critical CSS for above-the-fold content */
+.home {
+    contain: layout style;
+    will-change: auto;
+}
+
+.home-content h1,
+.home-content h3,
+.home-content p {
+    contain: style;
+}
+
+/* Defer non-critical animations */
+@media (prefers-reduced-motion: no-preference) {
+    .tech-satellite {
+        animation: satelliteFloat 8s ease-in-out infinite;
+    }
+}
+
+/* Optimize tech satellite positioning with subpixel precision */
+.satellite-1 {
+    /* Cloud Architecture - Top */
+    top: 8%;
+    left: 40%;
+    transform: translateX(-50%) translate3d(0, 0, 0);
+    animation-delay: 0s;
+}
+
+.satellite-2 {
+    /* AI/ML Engineering - Top Right (moved away from face) */
+    top: 20%;
+    right: -15%;
+    transform: translate3d(0, 0, 0);
+    animation-delay: 1.6s;
+}
+
+.satellite-3 {
+    /* Cybersecurity - Bottom Right */
+    bottom: 20%;
+    right: -20%;
+    transform: translate3d(0, 0, 0);
+    animation-delay: 3.2s;
+}
+
+.satellite-4 {
+    /* DevOps - Bottom */
+    bottom: -5%;
+    left: 25%;
+    transform: translateX(-50%) translate3d(0, 0, 0);
+    animation-delay: 4.8s;
+}
+
+.satellite-5 {
+    /* Forensics Analyst - Left (inside circle boundary) */
+    top: 35%;
+    left: 8%;
+    transform: translate3d(0, 0, 0);
+    animation-delay: 6.4s;
 }
 
 .tech-satellite i {
     transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
 
-.tech-satellite:hover {
-    animation-play-state: paused;
-    transform: scale(1.13);
-    box-shadow: 0 8px 30px var(--shadow-color), 0 0 30px rgba(54, 92, 255, 0.6);
-    background: var(--hover-bg) !important;
-    color: var(--main-color) !important;
-}
 
-.tech-satellite:hover i {
-    color: var(--main-color) !important;
-    background: linear-gradient(135deg, var(--main-color), #00d4aa) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-}
 
-.satellite-1 {
-    top: 16%;
-    right: 25%;
-    animation-delay: 0s;
-}
 
-.satellite-2 {
-    top: 35%;
-    right: 15%;
-    animation-delay: 3s;
-}
 
-.satellite-3 {
-    top: 55%;
-    right: 30%;
-    animation-delay: 6s;
-}
 
-.satellite-4 {
-    top: 75%;
-    right: 20%;
-    animation-delay: 9s;
-}
-
-@keyframes bubbleFloat {
-    0%, 100% {
-        transform: translateY(0px) translateX(0px) scale(1);
-        opacity: 0.7;
-    }
-    25% {
-        transform: translateY(-30px) translateX(10px) scale(1.1);
-        opacity: 1;
-    }
-    50% {
-        transform: translateY(-50px) translateX(-5px) scale(0.9);
-        opacity: 0.8;
-    }
-    75% {
-        transform: translateY(-20px) translateX(15px) scale(1.05);
-        opacity: 0.9;
-    }
-}
 
 /* Data Stream Lines */
 .data-stream {
@@ -3556,91 +3776,8 @@ body.dark-mode .logo-light { display: none !important; }
     }
 }
 
-/* Interactive Hover Effects */
-.tech-satellite:hover {
-    animation-play-state: paused;
-    transform: scale(1.3);
-    box-shadow: 0 0 30px rgba(54, 92, 255, 0.6);
-    background: var(--main-color);
-    color: var(--bg-color);
-}
+/* REMOVED OLD CONFLICTING MODAL STYLES */
 
-/* Fix image opacity to 100% */
-.home-img img {
-    position: absolute;
-    top: 28%;
-    right: 7%;
-    width: 550px;
-    pointer-events: none;
-    transform: none !important;
-    opacity: 1 !important;
-    z-index: 1;
-}
-
-/* Profession Modal Styles */
-.profession-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.profession-modal.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(20, 30, 50, 0.32);
-    backdrop-filter: blur(18px) saturate(1.3);
-    -webkit-backdrop-filter: blur(18px) saturate(1.3);
-    transition: background 0.45s cubic-bezier(0.4,0,0.2,1), backdrop-filter 0.45s cubic-bezier(0.4,0,0.2,1);
-    z-index: 1;
-}
-.modal-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.92);
-    width: 92%;
-    max-width: 540px;
-    max-height: 82vh;
-    background: rgba(255,255,255,0.68);
-    border-radius: 32px;
-    border: 1.5px solid rgba(54,92,255,0.18);
-    box-shadow: 0 12px 48px 0 rgba(54,92,255,0.18), 0 2px 12px 0 rgba(0,0,0,0.10), 0 1.5px 8px rgba(0,0,0,0.08) inset;
-    color: var(--text-color);
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), background 0.45s cubic-bezier(0.4,0,0.2,1);
-    opacity: 0;
-    z-index: 2;
-    backdrop-filter: blur(12px) saturate(1.1);
-    -webkit-backdrop-filter: blur(12px) saturate(1.1);
-    overflow: hidden;
-}
-.profession-modal.active .modal-container {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.45s cubic-bezier(0.4,0,0.2,1);
-}
-body.dark-mode .modal-container,
-body.dark-mode .modal-content {
-    background: rgba(20,30,50,0.82) !important;
-    color: var(--text-color) !important;
-    border: 1.5px solid rgba(100,255,218,0.13);
-    box-shadow: 0 12px 48px 0 rgba(100,255,218,0.10), 0 2px 12px 0 rgba(0,0,0,0.18), 0 1.5px 8px rgba(0,0,0,0.10) inset;
-    backdrop-filter: blur(14px) saturate(1.1);
-    -webkit-backdrop-filter: blur(14px) saturate(1.1);
-}
 .modal-content {
     background: transparent;
     border-radius: 32px;
@@ -3818,20 +3955,28 @@ body.dark-mode .modal-content {
     }
 }
 
-/* Interactive hover effect for main image */
+/* Fixed Profile Image - Remove Conflicting Hover Effects */
 .home-img img {
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.4s cubic-bezier(0.4,0,0.2,1);
-    will-change: transform, box-shadow, filter;
-    z-index: 1;
+    transition: none !important;
+    will-change: auto !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
 }
 
+/* Remove all conflicting hover effects that cause flickering */
 .home-img img:hover {
-    transform: scale(1.08) rotate(-3deg) !important;
-    box-shadow: 0 0 60px 0 #64ffda, 0 8px 32px 0 rgba(0,0,0,0.25) !important;
-    filter: brightness(1.08) saturate(1.2) !important;
-    border: 3px solid #64ffda !important;
-    z-index: 20 !important;
-    pointer-events: auto !important;
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    border: none !important;
+    z-index: 1 !important;
+}
+
+.home .home-img img:hover,
+.home .home-img img:focus {
+    transform: none !important;
+    box-shadow: none !important;
+    z-index: 1 !important;
 }
 
 /* Social Media Icons */
@@ -3899,38 +4044,24 @@ body.dark-mode .modal-content {
   pointer-events: auto !important;
 }
 
+/* Remove duplicate conflicting home image styles */
 /* Home section profile image as a perfect circle, no layout/size change */
 .home .home-img img {
   aspect-ratio: 1 / 1;
   height: 550px;
   width: 550px;
-  top: 18%; /* was 28% */
+  top: 18%;
   left: auto;
   right: 7%;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 24px rgba(54,92,255,0.10);
   background: var(--card-bg);
-}
-
-/* Home section profile image: 3D tilt effect on hover */
-.home .home-img img {
-  transition: 
-    transform 0.5s cubic-bezier(0.4,0,0.2,1),
-    box-shadow 0.4s cubic-bezier(0.4,0,0.2,1);
-  will-change: transform;
-}
-
-.home .home-img img:hover,
-.home .home-img img:focus {
-  transform: perspective(600px) rotateY(12deg) rotateX(6deg) scale(1.06);
-  box-shadow: 0 0 0 8px var(--main-color, #365cff), 0 8px 32px rgba(54,92,255,0.18);
-  z-index: 30;
-}
-
-/* Ensure pointer events for home profile image (for JS tilt effect) */
-.home .home-img img {
-  pointer-events: auto !important;
+  /* Remove all transitions and hover effects to prevent flickering */
+  transition: none !important;
+  will-change: auto !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
 
 /* Forensics Analyst icon position in orbit */
@@ -3988,12 +4119,7 @@ body.dark-mode .modal-content {
 .profession-modal[aria-modal="true"] {
   outline: none;
 }
-.modal-backdrop {
-  background: rgba(54,92,255,0.10);
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1000;
-}
+/* REMOVED DUPLICATE MODAL STYLES */
 
 /* Satellite-5 position tweak for better balance */
 .satellite-5 {
@@ -4123,91 +4249,7 @@ body.dark-mode .modal-content {
   position: absolute !important;
 }
 
-/* --- Remove unwanted blur from modal and overlays --- */
-.profession-modal,
-.modal-backdrop,
-.modal-container,
-.modal-content,
-.glass-card-main,
-.glass-blobs-main,
-.glass-card-timeline,
-.glass-blobs-timeline {
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  opacity: 1 !important;
-}
-
-/* --- Modal: Blur background only when modal is active --- */
-.profession-modal.active .modal-backdrop {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(54,92,255,0.10);
-}
-/* Ensure modal content is always sharp */
-.profession-modal .modal-container,
-.profession-modal .modal-content,
-.profession-modal .modal-body {
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  opacity: 1 !important;
-}
-
-/* --- Ensure modal backdrop covers viewport for blur effect --- */
-.profession-modal .modal-backdrop {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 9 !important;
-  background: rgba(54,92,255,0.10) !important;
-  pointer-events: auto !important;
-}
-
-/* --- Modal content always readable and sharp --- */
-.profession-modal .modal-container,
-.profession-modal .modal-content,
-.profession-modal .modal-body,
-.profession-modal .modal-body *,
-.profession-modal .modal-header,
-.profession-modal .modal-header *,
-.profession-modal .modal-close {
-  background: var(--card-bg) !important;
-  color: var(--text-color) !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  opacity: 1 !important;
-  box-shadow: 0 8px 32px rgba(54,92,255,0.12), 0 1.5px 8px rgba(0,0,0,0.08);
-}
-
-/* --- Glassmorphism modal: modern, readable, and futuristic --- */
-.profession-modal .modal-container,
-.profession-modal .modal-content,
-.profession-modal .modal-body,
-.profession-modal .modal-header {
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1.5px solid var(--glass-border);
-  box-shadow: 0 8px 32px rgba(54,92,255,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
-  color: var(--text-color) !important;
-  text-shadow: 0 1px 2px rgba(255,255,255,0.15), 0 0.5px 1px rgba(0,0,0,0.10);
-}
-body.dark-mode .profession-modal .modal-container,
-body.dark-mode .profession-modal .modal-content,
-body.dark-mode .profession-modal .modal-body,
-body.dark-mode .profession-modal .modal-header {
-  background: rgba(20,30,50,0.75);
-  color: var(--text-color) !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.25), 0 0.5px 1px rgba(255,255,255,0.10);
-}
-.profession-modal .modal-body *,
-.profession-modal .modal-header * {
-  color: var(--text-color) !important;
-  text-shadow: none;
-}
+/* REMOVED MORE CONFLICTING MODAL STYLES */
 
 /* Mobile-only profession icons row */
 .mobile-professions {
@@ -4304,6 +4346,13 @@ body.dark-mode .profession-modal .modal-header {
   }
   .home .tech-orbit {
     display: none !important;
+  }
+  
+  /* Force desktop visibility */
+  @media (min-width: 769px) {
+    .home .tech-orbit {
+      display: block !important;
+    }
   }
   .about {
     margin-top: 0 !important;
@@ -4715,58 +4764,129 @@ body.dark-mode .profession-modal .modal-header {
   }
 }
 
+/* Additional Performance Optimizations */
+
+/* Optimize all animations for better performance */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Critical resource hints for faster loading */
+body {
+    contain: layout style paint;
+}
+
+/* Optimize portfolio grid performance */
+.portfolio .portfolio-container {
+    contain: layout style;
+    will-change: auto;
+}
+
+/* Optimize tech satellites for 60fps animation */
+.tech-satellite {
+    contain: layout style paint;
+    isolation: isolate;
+}
+
+/* Optimize floating animations */
+@keyframes satelliteFloat {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        box-shadow: 0 6px 20px rgba(54, 92, 255, 0.2);
+    }
+    50% {
+        transform: translate3d(0, -12px, 0) scale(1.02);
+        box-shadow: 0 10px 30px rgba(54, 92, 255, 0.3);
+    }
+}
+
+/* Optimize portfolio cards */
+.portfolio-box {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+/* Optimize button hover effects */
+.btn:hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
+}
+
+/* Fix mobile tech satellite color blending */
 @media (max-width: 768px) {
-  .mobile-professions-row .tech-satellite:hover, .mobile-professions-row .tech-satellite:focus, .mobile-professions-row .tech-satellite:active {
-    background: var(--hover-bg) !important;
-    color: var(--main-color) !important;
-    outline: none;
-    transform: scale(1.13);
-  }
-  .mobile-professions-row .tech-satellite:hover i, .mobile-professions-row .tech-satellite:focus i, .mobile-professions-row .tech-satellite:active i {
-    color: var(--main-color) !important;
-    background: linear-gradient(135deg, var(--main-color), #00d4aa) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-  }
+    .mobile-professions-row .tech-satellite:hover,
+    .mobile-professions-row .tech-satellite:focus,
+    .mobile-professions-row .tech-satellite:active {
+        background: var(--white-color) !important;
+        color: var(--main-color) !important;
+        border: 2px solid var(--main-color) !important;
+        outline: none;
+        transform: scale(1.13);
+        /* Remove gradient blending */
+        background-image: none !important;
+    }
+    
+    .mobile-professions-row .tech-satellite:hover i,
+    .mobile-professions-row .tech-satellite:focus i,
+    .mobile-professions-row .tech-satellite:active i {
+        color: var(--main-color) !important;
+        background: transparent !important;
+        background-image: none !important;
+        -webkit-background-clip: initial !important;
+        -webkit-text-fill-color: var(--main-color) !important;
+        background-clip: initial !important;
+    }
+}
+
+/* CLEAN MODAL SYSTEM - FINAL VERSION */
+.profession-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    display: none !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.profession-modal.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
 }
 
 .profession-modal .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(20, 30, 50, 0.22);
-    backdrop-filter: blur(22px) saturate(1.25);
-    -webkit-backdrop-filter: blur(22px) saturate(1.25);
-    transition: background 0.45s cubic-bezier(0.4,0,0.2,1), backdrop-filter 0.45s cubic-bezier(0.4,0,0.2,1);
-    z-index: 1;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    cursor: pointer !important;
+    z-index: 1 !important;
 }
+
 .profession-modal .modal-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.96);
-    width: 94%;
-    max-width: 520px;
-    max-height: 82vh;
-    background: rgba(255,255,255,0.58);
-    border-radius: 36px;
-    border: 1.5px solid rgba(54,92,255,0.13);
-    box-shadow: 0 12px 48px 0 rgba(54,92,255,0.13), 0 2px 12px 0 rgba(0,0,0,0.08), 0 1.5px 8px rgba(0,0,0,0.06) inset;
-    color: var(--text-color);
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), background 0.45s cubic-bezier(0.4,0,0.2,1);
-    opacity: 0;
-    z-index: 2;
-    backdrop-filter: blur(10px) saturate(1.08);
-    -webkit-backdrop-filter: blur(10px) saturate(1.08);
-    overflow: hidden;
-}
-.profession-modal.active .modal-container {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+    position: relative !important;
+    width: 100% !important;
+    max-width: 480px !important;
+    max-height: 85vh !important;
+    background: var(--card-bg) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    overflow: hidden !important;
+    z-index: 10 !important;
+    margin: 0 auto !important;
+    transform: none !important;
 }
 body.dark-mode .profession-modal .modal-container,
 body.dark-mode .profession-modal .modal-content {
@@ -4785,46 +4905,48 @@ body.dark-mode .profession-modal .modal-content {
     overflow: hidden;
     position: relative;
 }
+/* SIMPLE MODAL HEADER AND BODY */
 .profession-modal .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2.2rem 2.2rem 1.2rem;
-    border-bottom: 1px solid rgba(100, 255, 218, 0.08);
-    background: transparent;
+    padding: 1.5rem 2rem 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
+
 .profession-modal .modal-header h2 {
     color: var(--main-color);
-    font-size: 2.1rem;
+    font-size: 1.6rem;
     margin: 0;
-    letter-spacing: 0.01em;
-    font-weight: 700;
-    text-shadow: 0 1px 2px rgba(54,92,255,0.06);
+    font-weight: 600;
+    flex: 1;
 }
+
 .profession-modal .modal-close {
-    background: none;
+    background: transparent;
     border: none;
     color: var(--text-color);
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    padding: 0.7rem;
+    padding: 0.5rem;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1.5px 8px rgba(54,92,255,0.06);
 }
+
 .profession-modal .modal-close:hover {
-    background: rgba(100, 255, 218, 0.13);
+    background: rgba(54, 92, 255, 0.1);
     color: var(--main-color);
-    transform: rotate(90deg) scale(1.13);
 }
+
 .profession-modal .modal-body {
-    padding: 2.2rem;
+    padding: 1.5rem 2rem 2rem;
     max-height: 60vh;
     overflow-y: auto;
-    background: transparent;
 }
 .profession-modal .profession-icon {
     text-align: center;
@@ -4977,6 +5099,149 @@ body.dark-mode .profession-modal .modal-container {
     60% { opacity: 0.7; left: -100%; }
     80% { opacity: 1; left: 100%; }
     100% { opacity: 0.7; left: 100%; }
+}
+
+/* Page Load Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Simplified Page Load Animations - No Delays */
+.home-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.home-img img {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.tech-satellite {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Remove section animation delays */
+.about,
+.skills-breakdown,
+.portfolio,
+.serives,
+.blog,
+.contact {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .home-content,
+    .home-img img,
+    .tech-satellite,
+    .about,
+    .skills-breakdown,
+    .portfolio,
+    .serives,
+    .blog,
+    .contact {
+        animation: none;
+    }
+}
+/* Optimized Desktop Tech Satellites - Always Visible */
+@media (min-width: 769px) {
+    .tech-orbit {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .tech-satellite {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+#show-more-projects-btn {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--white-color);
+    border: none;
+    padding: 1.2rem 3rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+    margin: 3rem auto 0;
+    display: block;
+}
+
+#show-more-projects-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+}
+
+#show-more-projects-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
+}
+
+#show-more-projects-btn:hover::before {
+    left: 100%;
+}
+
+#show-more-projects-btn:active {
+    transform: translateY(-1px) scale(1.02);
 }
 
 /* Remove blogBadgeFloat keyframes if not used elsewhere */
