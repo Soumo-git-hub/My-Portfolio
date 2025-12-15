@@ -1,24 +1,21 @@
-# Block direct access to secure directory
-Order Deny,Allow
-Deny from all
-
-# Only allow access from specific referrers (your portfolio)
+# Allow access only through XMLHttpRequest (AJAX)
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?soumo-git-hub\.github\.io/My-Portfolio [NC]
-    RewriteCond %{HTTP_REFERER} !^https?://localhost [NC]
-    RewriteCond %{HTTP_REFERER} !^https?://127\.0\.0\.1 [NC]
+    
+    # Allow access from localhost for development
+    RewriteCond %{HTTP_REFERER} ^https?://localhost [NC,OR]
+    RewriteCond %{HTTP_REFERER} ^https?://127\.0\.0\.1 [NC,OR]
+    RewriteCond %{HTTP_REFERER} ^https?://soumo-git-hub\.github\.io [NC]
+    RewriteRule .* - [L]
+    
+    # Block direct access (when accessed directly in browser)
+    RewriteCond %{HTTP_USER_AGENT} ^Mozilla.*$
+    RewriteCond %{HTTP_ACCEPT} !application/json
+    RewriteCond %{HTTP_X_REQUESTED_WITH} !XMLHttpRequest
     RewriteRule .* - [F,L]
 </IfModule>
 
-# Block access to all files in this directory
-<Files "*">
-    Order Deny,Allow
-    Deny from all
-</Files>
-
-# Block access to PDF files specifically
+# Set proper headers for PDF files
 <Files "*.pdf">
-    Order Deny,Allow
-    Deny from all
-</Files> 
+    Header set Content-Disposition "attachment"
+</Files>

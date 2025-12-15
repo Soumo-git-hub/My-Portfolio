@@ -1207,7 +1207,7 @@ document.addEventListener('DOMContentLoaded', function() {
       mathError.textContent = 'Preparing download...';
       try {
         // Only fetch and download the PDF after passing the math check
-        const response = await fetch('secure/resume.pdf');
+        const response = await fetch('../secure/resume.pdf');
         if (!response.ok) throw new Error('Failed to fetch resume');
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
