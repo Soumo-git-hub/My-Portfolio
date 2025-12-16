@@ -621,7 +621,11 @@ const progressObserver = new IntersectionObserver((entries) => {
 // Smooth Scroll - Fixed for Instant Response
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        // Skip if href is just "#" (no target)
+        if (href === '#') return;
+        
+        const target = document.querySelector(href);
         if (target) {
             e.preventDefault();
             target.scrollIntoView({
@@ -631,7 +635,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-
 // Progress Circle Animation
 const progressCircles = document.querySelectorAll('.progress-circle');
 progressCircles.forEach(circle => {
