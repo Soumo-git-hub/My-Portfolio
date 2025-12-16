@@ -623,15 +623,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         // Skip if href is just "#" (no target)
-        if (href === '#') return;
+        if (href === '#' || href === '') return;
         
-        const target = document.querySelector(href);
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+        // Only query for targets that are not just "#"
+        if (href.startsWith('#') && href.length > 1) {
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         }
     });
 });
@@ -1210,7 +1213,7 @@ document.addEventListener('DOMContentLoaded', function() {
       mathError.textContent = 'Preparing download...';
       try {
         // Only fetch and download the PDF after passing the math check
-        const response = await fetch('../secure/resume.pdf');
+        const response = await fetch('secure/resume.pdf');
         if (!response.ok) throw new Error('Failed to fetch resume');
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
