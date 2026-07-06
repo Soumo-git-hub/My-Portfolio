@@ -4,8 +4,8 @@
   "description": "Professional portfolio of Soumyadyuti Dey - Cloud Architect, AI/ML Engineer, and Cybersecurity Expert",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f8f9ff",
-  "theme_color": "#365cff",
+  "background_color": "#F7F4EF",
+  "theme_color": "#3D4FE0",
   "orientation": "portrait-primary",
   "icons": [
     {

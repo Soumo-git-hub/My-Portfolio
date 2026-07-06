@@ -1,122 +1,42 @@
-// Code created By Dev Zone Developer
-/* =============== Menu Icons Navbar =============== */
-let menuicon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
-
-    if (menuicon && navbar) {
-// Menu icon click handler
-menuicon.onclick = () => {
-    menuicon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-    // Update aria-expanded for accessibility
-    menuicon.setAttribute('aria-expanded', navbar.classList.contains('active'));
-};
-
-// Keyboard accessibility for menu icon
-menuicon.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        menuicon.click();
-    }
-});
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuicon.contains(e.target) && !navbar.contains(e.target)) {
-                menuicon.classList.remove('bx-x');
-                navbar.classList.remove('active');
-            }
-        });
-
-        // Close menu when clicking on a link
-        navbar.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuicon.classList.remove('bx-x');
-                navbar.classList.remove('active');
-            });
-        });
-    }
+/* =============== Global variables (set at module scope, populated in DOMContentLoaded) =============== */
+let menuicon;
+let navbar;
 
 /* =============== Scroll section active link =============== */
 let sections = document.querySelectorAll('section');
 let navlinks = document.querySelectorAll('header nav a');
 
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
-
-        if (top >= offset && top < offset + height) {
-            navlinks.forEach(link => {
-                link.classList.remove('active');
-                    const activeLink = document.querySelector('header nav a[href*=' + id + ']');
-                    if (activeLink) {
-                        activeLink.classList.add('active');
-                    }
-            });
-        }
-    });
-
-    /* =============== Sticky NavBar =============== */
-    let header = document.querySelector('.header');
-        if (header) {
-    header.classList.toggle('sticky', window.scrollY > 100);
-        }
-
-    /* =============== remove menu icon navbar when click nvbar link (scroll) =============== */
-        if (menuicon) {
-    menuicon.classList.remove('bx-x');
-        }
-        if (navbar) {
-    navbar.classList.remove('active');
-        }
-};
-
-/* =============== Swipper =============== */
-var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 1,
-    spaceBetween: 50,
-    loop: true,
-    grabCursor: true,
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-    },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-});
 
 /* =============== Dark Light Mode =============== */
 let darkmodeIcon = document.querySelector('#darkMode-icon');
 
-// Check for saved theme preference or use system preference
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-const savedTheme = localStorage.getItem('theme');
+// Apply saved theme immediately to prevent flash of wrong theme
+(function applyInitialTheme() {
+    try {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.body.classList.add('dark-mode');
+            if (darkmodeIcon) {
+                darkmodeIcon.classList.remove('bx-moon');
+                darkmodeIcon.classList.add('bx-sun');
+            }
+        }
+    } catch (e) { /* localStorage may be blocked in private/sandboxed contexts */ }
+})();
 
-// Set initial theme
-if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
-    document.body.classList.add('dark-mode');
-    darkmodeIcon.classList.remove('bx-moon');
-    darkmodeIcon.classList.add('bx-sun');
-}
-
-// Dark mode toggle function
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
-    darkmodeIcon.classList.toggle('bx-moon');
-    darkmodeIcon.classList.toggle('bx-sun');
-    
-    // Save theme preference
-    const isDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    if (darkmodeIcon) {
+        darkmodeIcon.classList.toggle('bx-moon');
+        darkmodeIcon.classList.toggle('bx-sun');
+    }
+    try {
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    } catch (e) { /* ignore */ }
 }
 
-// Add click event listener
-darkmodeIcon.addEventListener('click', toggleDarkMode);
 
 /* =============== Scroll Reveal =============== */
 ScrollReveal({
@@ -325,33 +245,37 @@ function animateSkillsOnScroll() {
 /* =============== Initialize All Features =============== */
 // Single DOMContentLoaded event listener to initialize everything
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded - Starting initialization...');
-    
-    // Initialize menu functionality
+    // Populate module-level nav references
     menuicon = document.querySelector('#menu-icon');
     navbar = document.querySelector('.navbar');
+    // Re-assign darkmodeIcon in case it was null at module load
+    darkmodeIcon = document.querySelector('#darkMode-icon');
 
     if (menuicon && navbar) {
-        // Menu icon click handler
-        menuicon.onclick = () => {
-            menuicon.classList.toggle('bx-x');
-            navbar.classList.toggle('active');
+        const toggleMenu = (open) => {
+            const isOpen = open !== undefined ? open : !navbar.classList.contains('active');
+            menuicon.classList.toggle('bx-x', isOpen);
+            navbar.classList.toggle('active', isOpen);
+            menuicon.setAttribute('aria-expanded', String(isOpen));
         };
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuicon.contains(e.target) && !navbar.contains(e.target)) {
-                menuicon.classList.remove('bx-x');
-                navbar.classList.remove('active');
+        menuicon.onclick = () => toggleMenu();
+
+        menuicon.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleMenu();
             }
         });
 
-        // Close menu when clicking on a link
+        document.addEventListener('click', (e) => {
+            if (!menuicon.contains(e.target) && !navbar.contains(e.target)) {
+                toggleMenu(false);
+            }
+        });
+
         navbar.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuicon.classList.remove('bx-x');
-                navbar.classList.remove('active');
-            });
+            link.addEventListener('click', () => toggleMenu(false));
         });
     }
 
@@ -375,15 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cycleExpertiseChips();
 
     // Initialize Three.js
-    console.log('Initializing Three.js...');
     initThreeJS();
 
     // Initialize profession modal
-    console.log('Initializing profession modal...');
     initProfessionModal();
 
     // Initialize profession icons
-    console.log('Initializing profession icons...');
     initProfessionIcons();
 
     // Handle window resize
@@ -401,28 +322,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize lazy loading
     lazyLoadImages();
 
-    // Initialize dark mode
-    const darkmodeIcon = document.querySelector('#darkMode-icon');
+    // Initialize dark mode — use the outer `darkmodeIcon` (already set at line 252)
     if (darkmodeIcon) {
         darkmodeIcon.addEventListener('click', toggleDarkMode);
     }
 
-    // Initialize portfolio filtering
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const portfolioBoxes = document.querySelectorAll('.portfolio-box');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const filter = this.getAttribute('data-filter');
-            portfolioBoxes.forEach(box => {
-                if (filter === 'all' || box.getAttribute('data-category') === filter) {
-                    box.style.display = '';
-                } else {
-                    box.style.display = 'none';
-                }
-            });
+    // Service "Learn More" buttons — open profession modal
+    document.querySelectorAll('.service-learn-more[data-profession]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            showProfessionModal(btn.getAttribute('data-profession'), btn);
         });
     });
 
@@ -436,39 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const techIcons = document.querySelectorAll('.home .tech-satellite');
     if (!techIcons.length) return;
 
-    // Store original positions for each icon
-    const iconData = Array.from(techIcons).map(icon => {
-        return {
-            icon,
-            bouncing: false,
-            timeout: null
-        };
-    });
-
-    function getRect(el) {
-        const r = el.getBoundingClientRect();
-        return { x: r.left + r.width/2, y: r.top + r.height/2, w: r.width, h: r.height };
-    }
-
-    function animateBounce(iconObj, dx, dy) {
-        if (iconObj.bouncing) return;
-        iconObj.bouncing = true;
-        iconObj.icon.style.transition = 'transform 0.5s cubic-bezier(0.4,2,0.2,1)';
-        iconObj.icon.style.transform = `translate(${dx}px, ${dy}px) scale(1.15)`;
-        clearTimeout(iconObj.timeout);
-        iconObj.timeout = setTimeout(() => {
-            iconObj.icon.style.transition = 'transform 0.7s cubic-bezier(0.4,0,0.2,1)';
-            iconObj.icon.style.transform = 'translate(0,0) scale(1)';
-            setTimeout(() => {
-                iconObj.icon.style.transition = '';
-                iconObj.bouncing = false;
-            }, 700);
-        }, 500);
-    }
-
-    // === REMOVED COLLISION DETECTION CODE ===
-    // This code was causing errors with undefined profileImg
-    
     // Gentle float animation
     techIcons.forEach((icon, i) => {
         icon.style.transition = 'transform 0.7s cubic-bezier(0.4,0,0.2,1)';
@@ -486,62 +361,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Modal open/keyboard events
-    const professionKeys = ['cloud', 'ai-ml', 'cybersecurity', 'devops', 'forensics'];
-    techIcons.forEach((icon, index) => {
-        const professionKey = professionKeys[index];
-        if (professionKey) {
-            icon.addEventListener('click', () => {
-                showProfessionModal(professionKey, icon);
+    // Mobile professions row — separate handler since initProfessionIcons only covers desktop icons
+    const allProfessionKeys = ['cloud', 'ai-ml', 'cybersecurity', 'devops', 'forensics'];
+    const mobileProfBtns = document.querySelectorAll('.mobile-professions-row .tech-satellite');
+    mobileProfBtns.forEach((btn, idx) => {
+        if (idx < allProfessionKeys.length) {
+            btn.addEventListener('click', () => {
+                showProfessionModal(allProfessionKeys[idx], btn);
             });
-            icon.addEventListener('keydown', (e) => {
+            btn.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    showProfessionModal(professionKey, icon);
+                    showProfessionModal(allProfessionKeys[idx], btn);
                 }
             });
         }
     });
-
-    // Mobile professions row modal logic
-    const mobileProfBtns = document.querySelectorAll('.mobile-professions-row .tech-satellite');
-    mobileProfBtns.forEach((btn, idx) => {
-        btn.addEventListener('click', () => {
-            showProfessionModal(professionKeys[idx], btn);
-        });
-        btn.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                showProfessionModal(professionKeys[idx], btn);
-            }
-        });
-    });
 });
 
 /* =============== Mail =============== */
-function sendToGmail(event) {
-    event.preventDefault(); // Prevent form from submitting
+function sendToGmail() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
 
-    // Get form values
-    const fullname = document.getElementById('fullname').value;
-    const email = document.getElementById('email').value;
-    const number = document.getElementById('number').value;
-    const emailSubject = document.getElementById('email-subject').value;
-    const message = document.getElementById('message').value;
-
-    // Construct the email body
     const emailBody =
-        `Full Name: ${fullname}%0D%0A` +
-        `Email: ${email}%0D%0A` +
-        `Number: ${number}%0D%0A` +
-        `Email Subject: ${emailSubject}%0D%0A` +
-        `Message: ${message}`;
+        `Full Name: ${fullName}\r\n` +
+        `Email: ${email}\r\n` +
+        (phone ? `Phone: ${phone}\r\n` : '') +
+        `Message:\r\n${message}`;
 
-    // Gmail compose URL
-    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=deysoumyadyuti@gmail.com&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=deysoumyadyuti@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    window.open(gmailURL, '_blank', 'noopener,noreferrer');
+}
 
-    // Redirect to Gmail
-    window.open(gmailURL, '_blank');
+function handleContactSubmit(event) {
+    event.preventDefault();
+    const form = document.getElementById('contact-form');
+    const inputs = form.querySelectorAll('input:not([type="submit"]), textarea');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        if (!validateField(input)) {
+            isValid = false;
+        }
+    });
+
+    if (isValid) {
+        sendToGmail();
+        form.reset();
+        const submitBtn = form.querySelector('[type="submit"]');
+        if (submitBtn) {
+            const original = submitBtn.value;
+            submitBtn.value = 'Opening Gmail...';
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                submitBtn.value = original;
+                submitBtn.disabled = false;
+            }, 2000);
+        }
+    }
+
+    return false;
 }
 
 // Progress Button Animation 
@@ -574,25 +457,26 @@ function animateProgress(element, start, end, duration) {
     element.animationFrame = requestAnimationFrame(animationStep);
 }
 
-// Progress Circle Animation
+// Progress Circle Animation (rAF-based for smooth 60fps rendering)
 function animateProgressCircle(element) {
     const progressBar = element.querySelector('.progress-bar');
     const progressText = element.querySelector('.progress-text');
     const target = parseInt(element.getAttribute('data-progress'));
-    let current = 0;
-    
-    const animation = setInterval(() => {
-        current += 1;
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
         const degrees = (current / 100) * 360;
         progressBar.style.background = `conic-gradient(var(--main-color) 0deg, var(--main-color) ${degrees}deg, var(--white-color) ${degrees}deg)`;
         progressText.textContent = `${current}%`;
-        
-        if (current >= target) {
-            clearInterval(animation);
-            progressBar.style.background = `conic-gradient(var(--main-color) 0deg, var(--main-color) ${(target / 100) * 360}deg, var(--white-color) ${(target / 100) * 360}deg)`;
-            progressText.textContent = `${target}%`;
-        }
-    }, 20);
+        if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
 }
 
 // Initialize progress circles when they come into view
@@ -672,11 +556,12 @@ window.addEventListener('scroll', () => {
 });
     }
 
-// Initialize AOS
+// Initialize AOS (single call, once: true prevents re-triggering)
 AOS.init({
-    duration: 800,
-    offset: 100,
-    once: true
+    duration: 900,
+    offset: 80,
+    once: true,
+    easing: 'ease-out-cubic'
 });
 
 // Mobile Menu Toggle
@@ -702,32 +587,6 @@ portfolioItems.forEach(item => {
         }
 });
 
-// Form Validation
-const contactForm = document.querySelector('.contact form');
-    if (contactForm) {
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Basic form validation
-    const inputs = contactForm.querySelectorAll('input, textarea');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            isValid = false;
-            input.style.borderColor = 'red';
-        } else {
-            input.style.borderColor = '';
-        }
-    });
-    
-    if (isValid) {
-        // Here you would typically send the form data
-        alert('Message sent successfully!');
-        contactForm.reset();
-    }
-});
-    }
 
 // Add smooth reveal animation for sections
 const observerOptions = {
@@ -832,10 +691,8 @@ let isAnimating = false;
 
 function initThreeJS() {
     if (typeof THREE === 'undefined') {
-        console.warn('[Three.js] THREE is not loaded. 3D effects will be disabled.');
         return;
     }
-    console.log('Initializing Three.js...');
     // Create scene
     scene = new THREE.Scene();
     
@@ -848,7 +705,7 @@ function initThreeJS() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     document.body.appendChild(renderer.domElement);
-    
+
     // Create a simple geometry for zoom effect
     const geometry = new THREE.SphereGeometry(1, 32, 32);
     const material = new THREE.MeshBasicMaterial({ 
@@ -868,8 +725,6 @@ function initThreeJS() {
     renderer.domElement.style.zIndex = '9998';
     renderer.domElement.style.opacity = '0';
     renderer.domElement.style.transition = 'opacity 0.3s ease';
-    
-    console.log('Three.js initialized successfully');
     animate();
 }
 
@@ -886,27 +741,16 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-// Initialize the modal system when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the profession modal
-    initProfessionModal();
-    
-    // Initialize profession icons
-    initProfessionIcons();
-});
 
 // ULTIMATE SIMPLE Modal functionality
 function initProfessionModal() {
     const modal = document.getElementById('profession-modal');
     const modalClose = document.querySelector('.modal-close');
     const modalBackdrop = document.querySelector('.modal-backdrop');
-    
+
     if (!modal) {
-        console.warn('[Profession Modal] Modal element not found');
         return { closeModal: () => {} };
     }
-    
-    console.log('Initializing simple profession modal...');
     
     // Simple close modal function
     function closeModal() {
@@ -941,7 +785,6 @@ function initProfessionModal() {
         }
     });
     
-    console.log('Simple modal initialized successfully');
     return { closeModal };
 }
 
@@ -1005,24 +848,14 @@ function createZoomAnimation(element, professionKey) {
 
 // Fixed Profession Icon Interactive Logic - No More Errors
 function initProfessionIcons() {
-    console.log('Initializing profession icons...');
     const techIcons = document.querySelectorAll('.tech-satellite');
-    if (!techIcons.length) {
-        console.warn('[Profession Icons] No .tech-satellite elements found.');
-        return;
-    }
-    console.log('Found tech icons:', techIcons.length);
-    
+    if (!techIcons.length) return;
+
     const professionKeys = ['cloud', 'ai-ml', 'cybersecurity', 'devops', 'forensics'];
-    
+
     techIcons.forEach((icon, index) => {
-        // Only process icons that have a corresponding profession key
         if (index < professionKeys.length) {
             const professionKey = professionKeys[index];
-            
-            console.log(`Setting up icon ${index + 1} with profession key:`, professionKey);
-            console.log('Icon element:', icon);
-            
             icon.addEventListener('click', () => {
                 showProfessionModal(professionKey, icon);
             });
@@ -1032,8 +865,6 @@ function initProfessionIcons() {
                     showProfessionModal(professionKey, icon);
                 }
             });
-        } else {
-            console.log(`Skipping icon ${index + 1} - no corresponding profession key`);
         }
     });
 }
@@ -1277,23 +1108,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Enhance hamburger menu animation for mobile
-if (window.innerWidth <= 768 && menuicon && navbar) {
-    menuicon.onclick = () => {
-        menuicon.classList.toggle('bx-x');
-        navbar.classList.toggle('active');
-        // Add a little bounce effect
-        if (navbar.classList.contains('active')) {
-            navbar.style.willChange = 'opacity, transform';
-            navbar.style.transition = 'opacity 0.38s cubic-bezier(0.4,0,0.2,1), transform 0.38s cubic-bezier(0.4,0,0.2,1)';
-            navbar.style.opacity = '1';
-            navbar.style.transform = 'translateY(0) scale(1)';
-        } else {
-            navbar.style.opacity = '0';
-            navbar.style.transform = 'translateY(-24px) scale(0.98)';
-        }
-    };
-}
 
 // === Enhanced Show More Projects Logic with Perfect Animations ===
 document.addEventListener('DOMContentLoaded', function() {
@@ -1302,13 +1116,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let expanded = false;
     
     if (showMoreBtn && extraProjects.length > 0) {
-        showMoreBtn.addEventListener('click', function() {
+        showMoreBtn.addEventListener('click', function(e) {
             // Add ripple effect
             const ripple = document.createElement('span');
             const rect = showMoreBtn.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
-            const x = event.clientX - rect.left - size / 2;
-            const y = event.clientY - rect.top - size / 2;
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
             
             ripple.style.cssText = `
                 position: absolute;
@@ -1415,3 +1229,7 @@ function initSectionAnimations() {
     style.innerHTML = `@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }`;
     document.head.appendChild(style);
 })();
+
+// Dynamic footer year
+const footerYear = document.getElementById('footer-year');
+if (footerYear) footerYear.textContent = new Date().getFullYear();

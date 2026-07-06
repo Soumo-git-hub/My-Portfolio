@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap");
 
 /* Performance Optimizations */
 * {
@@ -8,64 +8,72 @@
     box-sizing: border-box;
     text-decoration: none;
     border: none;
-    outline: none;
-    scroll-behavior: smooth;
-    font-family: "Poppins", sans-serif;
-    /* Performance optimizations */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
 
-/* GPU Acceleration for animations */
-.portfolio-box,
-.services-box,
-.skill-logo,
-.btn {
+/* Accessibility: visible focus ring for keyboard navigation only */
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--main-color);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* GPU promotion only while animating — applied via :hover to avoid permanent VRAM overhead */
+.portfolio-box:hover,
+.services-box:hover,
+.btn:hover {
     will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
 }
 
 :root {
-    --bg-color: #f8f9ff;
-    --text-color: #1a1f36;
-    --main-color: #365cff;
-    --secondary-color: #64ffda;
-    --accent-color: #4d6fff;
+    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Syne', sans-serif;
+    --font-ui: 'Space Grotesk', sans-serif;
+    /* Warm ivory light palette */
+    --bg-color: #F7F4EF;
+    --text-color: #1A1614;
+    --main-color: #3D4FE0;
+    --secondary-color: #5B6CF8;
+    --accent-color: #3D4FE0;
     --white-color: #ffffff;
-    --shadow-color: rgba(54, 92, 255, 0.15);
-    --glass-bg: rgba(248, 249, 255, 0.95);
-    --glass-border: rgba(54, 92, 255, 0.2);
-    --gradient-start: #365cff;
-    --gradient-end: #2a47cc;
-    --card-bg: #ffffff;
-    --hover-bg: #f0f4ff;
-    --text-secondary: #1a1f36;
-    --border-color: #e2e8f0;
+    --shadow-color: rgba(28, 25, 23, 0.08);
+    --glass-bg: rgba(247, 244, 239, 0.92);
+    --glass-border: rgba(28, 25, 23, 0.10);
+    --gradient-start: #3D4FE0;
+    --gradient-end: #2A38C4;
+    --card-bg: #ECE8DF;
+    --hover-bg: #E3DDD4;
+    --text-secondary: #5C5465;
+    --border-color: rgba(28, 25, 23, 0.12);
     --success-color: #10b981;
     --warning-color: #f59e0b;
     --error-color: #ef4444;
     --i: 0%;
-    transition: all 0.3s ease;
 }
 
 .dark-mode {
-    --bg-color: #0a192f;
-    --text-color: #e6f1ff;
-    --main-color: #64ffda;
-    --secondary-color: #4d6fff;
-    --accent-color: #64ffda;
-    --white-color: #0a192f;
-    --shadow-color: rgba(100, 255, 218, 0.15);
-    --glass-bg: rgba(10, 25, 47, 0.85);
-    --glass-border: rgba(100, 255, 218, 0.1);
-    --gradient-start: #64ffda;
-    --gradient-end: #4d6fff;
-    --card-bg: #112240;
-    --hover-bg: #1d3461;
-    --text-secondary: #8892b0;
-    --border-color: #233554;
+    /* Deep purple-black dark palette */
+    --bg-color: #0F0D18;
+    --text-color: #F2EFE9;
+    --main-color: #6272FF;
+    --secondary-color: #3D4FE0;
+    --accent-color: #6272FF;
+    --white-color: #0F0D18;
+    --shadow-color: rgba(0, 0, 0, 0.35);
+    --glass-bg: rgba(15, 13, 24, 0.92);
+    --glass-border: rgba(240, 237, 232, 0.08);
+    --gradient-start: #6272FF;
+    --gradient-end: #3D4FE0;
+    --card-bg: #1A1726;
+    --hover-bg: #241F34;
+    --text-secondary: #A09BB8;
+    --border-color: rgba(240, 237, 232, 0.10);
     --success-color: #10b981;
     --warning-color: #f59e0b;
     --error-color: #ef4444;
@@ -76,10 +84,16 @@ html {
 }
 
 body {
+    font-family: var(--font-body);
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow-x: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Three.js canvas appended to body — must never block scroll or click events */
+body > canvas {
+    pointer-events: none !important;
+    touch-action: none;
 }
 
 .header {
@@ -104,26 +118,12 @@ body {
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     box-shadow: 0 4px 20px var(--shadow-color);
-    transform: translateY(-100%);
-    animation: slideDown 0.5s forwards;
+    /* transform and animation handled by design block dynamic island rules */
 }
 
-@keyframes slideDown {
-    to {
-        transform: translateY(0);
-    }
-}
-
-.logo {
-    font-size: 2.5rem;
-    color: var(--main-color);
-    font-weight: 600;
-    cursor: default;
-    margin-right: auto;
-    cursor: pointer;
-}
 
 .navbar a {
+    font-family: var(--font-heading);
     font-size: 1.7rem;
     color: var(--text-color);
     font-weight: 500;
@@ -238,6 +238,7 @@ section {
 }
 
 .btn {
+    font-family: var(--font-heading);
     display: inline-block;
     padding: 1.2rem 2.8rem;
     background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
@@ -704,37 +705,6 @@ section {
     overflow: hidden;
 }
 
-.testimonial-box .swiper-button-next,
-.testimonial-box .swiper-button-prev {
-    color: var(--main-color);
-}
-
-.testimonial-box .swiper-button-next {
-    right: 0;
-}
-
-.testimonial-box .swiper-button-prev {
-    left: 0;
-}
-
-.testimonial-box .swiper-pagination-bullet {
-    background: var(--main-color);
-}
-
-.testimonial-box .swiper-pagination-bullet:active {
-    background: var(--main-color);
-}
-
-.swiper-horizontal>.swiper-pagination-bullets,
-.swiper-pagination-bullets.swiper-pagination-horizontal,
-.swiper-pagination-custom,
-.swiper-pagination-fraction {
-    bottom: var(--swiper-pagination-bottom, 22px);
-    top: var(--swiper-pagination-top, auto);
-    left: 0;
-    width: 100%;
-}
-
 .testimonial-content .testimonial-slide {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -846,7 +816,7 @@ section {
 
 .footer .footer-text p {
     font-size: 1.6rem;
-    color: var(--white-color);
+    color: #ffffff;
 }
 
 .footer-iconTop a {
@@ -1315,10 +1285,9 @@ section {
         min-height: 44px;
         font-size: 2.2rem;
     }
-    /* Remove horizontal scroll */
-    html, body {
+    /* Remove horizontal scroll (only on html — body must not have overflow-x:hidden or it creates a second scroll context) */
+    html {
         overflow-x: hidden;
-        max-width: 100vw;
     }
 }
 
@@ -1356,25 +1325,13 @@ section {
     }
 }
 
-/* Enhanced Native Smooth Scrolling */
+/* Native Smooth Scrolling — only html scrolls, body never creates a second scroll container */
 html {
-    scroll-behavior: smooth !important;
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
-body {
-    overflow-x: hidden !important;
-    scroll-behavior: smooth !important;
-    max-width: 100vw !important;
-    position: relative !important;
-}
-
-/* Prevent any element from causing horizontal overflow */
-* {
-    max-width: 100vw;
-    box-sizing: border-box !important;
-}
+/* box-sizing is already set in the main * rule above */
 
 /* Text Gradient Animation */
 .heading span {
@@ -1386,33 +1343,15 @@ body {
     background-size: 200% 200%;
 }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Floating Animation */
+/* float animation retained — profile image gentle oscillation */
 .home-img img {
     animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
 }
 
 /* Hover Effects */
@@ -3114,6 +3053,7 @@ textarea:focus {
 /* SEO Optimizations */
 /* Ensure proper heading hierarchy */
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     font-weight: 600;
     line-height: 1.2;
 }
@@ -3229,7 +3169,7 @@ a:hover {
   text-align: center;
 }
 .glass-content-main h2 {
-  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   margin: 0 0 8px 0;
   background: linear-gradient(90deg, #1c92d2, #f2fcfe);
@@ -3340,7 +3280,7 @@ a:hover {
   padding: 24px 16px 16px 16px;
 }
 .timeline-content h3 {
-  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  font-family: var(--font-heading);
   font-size: 1.2rem;
   margin: 0 0 8px 0;
   background: linear-gradient(90deg, #1c92d2, #f2fcfe);
@@ -3404,12 +3344,7 @@ a:hover {
   padding: 28px 20px 22px 20px;
 }
 
-/* Logo switching for light/dark mode */
-.logo-dark { display: none !important; }
-.logo-light { display: block !important; }
-
-body.dark-mode .logo-dark { display: block !important; }
-body.dark-mode .logo-light { display: none !important; }
+/* Logo image references removed — text-only logo */
 
 /* About section smooth expansion */
 .about-img, .about-content {
@@ -3430,81 +3365,6 @@ body.dark-mode .logo-light { display: none !important; }
   transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.5s;
 }
 
-
-
-/* Advanced Unique Animated Background */
-.particle-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: linear-gradient(45deg, var(--main-color), var(--accent-color));
-    border-radius: 50%;
-    animation: particleFloat 8s linear infinite;
-}
-
-.particle-1 { top: 10%; right: 20%; animation-delay: 0s; }
-.particle-2 { top: 30%; right: 15%; animation-delay: 1s; }
-.particle-3 { top: 50%; right: 25%; animation-delay: 2s; }
-.particle-4 { top: 70%; right: 20%; animation-delay: 3s; }
-.particle-5 { top: 20%; right: 35%; animation-delay: 4s; }
-.particle-6 { top: 40%; right: 30%; animation-delay: 5s; }
-.particle-7 { top: 60%; right: 40%; animation-delay: 6s; }
-.particle-8 { top: 80%; right: 35%; animation-delay: 7s; }
-
-@keyframes particleFloat {
-    0% {
-        transform: translateY(0px) translateX(0px) scale(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-        transform: translateY(-10px) translateX(5px) scale(1);
-    }
-    90% {
-        opacity: 1;
-        transform: translateY(-100px) translateX(20px) scale(1);
-    }
-    100% {
-        transform: translateY(-120px) translateX(25px) scale(0);
-        opacity: 0;
-    }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .image-background-shape {
-        width: 500px;
-        height: 500px;
-        right: 0%;
-        top: 15%;
-    }
-    
-    .tech-satellite {
-        width: 40px;
-        height: 40px;
-        font-size: 1.4rem;
-    }
-    
-    .data-line {
-        width: 100px !important;
-    }
-    
-    .home-img img {
-        width: 350px;
-        right: 5%;
-    }
-}
 
 /* Tech Icons as Floating Bubbles */
 .tech-orbit {
@@ -3676,7 +3536,7 @@ body {
 .satellite-1 {
     /* Cloud Architecture - Top */
     top: 8%;
-    left: 40%;
+    left: 28%;
     transform: translateX(-50%) translate3d(0, 0, 0);
     animation-delay: 0s;
 }
@@ -3723,60 +3583,6 @@ body {
 
 
 
-/* Data Stream Lines */
-.data-stream {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -3;
-}
-
-.data-line {
-    position: absolute;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--main-color), transparent);
-    animation: dataFlow 4s linear infinite;
-}
-
-.line-1 {
-    top: 20%;
-    right: 0;
-    width: 200px;
-    animation-delay: 0s;
-}
-
-.line-2 {
-    top: 40%;
-    right: 0;
-    width: 150px;
-    animation-delay: 1.3s;
-}
-
-.line-3 {
-    top: 60%;
-    right: 0;
-    width: 180px;
-    animation-delay: 2.6s;
-}
-
-@keyframes dataFlow {
-    0% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-}
-
-/* REMOVED OLD CONFLICTING MODAL STYLES */
 
 .modal-content {
     background: transparent;
@@ -4128,126 +3934,6 @@ body {
   animation-delay: 12s;
 }
 
-/* Increase particle density and allow overlap with profile image */
-.home .particle-container {
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; /* Raise above overlays, but below .home-content and .home-img img */
-}
-.home .particle {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--main-color), var(--secondary-color));
-  opacity: 0.18;
-  box-shadow: 0 2px 12px var(--main-color);
-  animation: particleFloat 8s infinite ease-in-out;
-}
-/* Add more particles with different positions and delays for density */
-.particle-9 { top: 25%; right: 40%; animation-delay: 1.5s; }
-.particle-10 { top: 60%; right: 18%; animation-delay: 2.2s; }
-.particle-11 { top: 45%; right: 50%; animation-delay: 3.1s; }
-.particle-12 { top: 70%; right: 28%; animation-delay: 4.3s; }
-.particle-13 { top: 38%; right: 22%; animation-delay: 5.7s; }
-.particle-14 { top: 55%; right: 38%; animation-delay: 6.4s; }
-.particle-15 { top: 32%; right: 12%; animation-delay: 7.2s; }
-.particle-16 { top: 68%; right: 45%; animation-delay: 8.1s; }
-/* Overlap some particles over the profile image circle */
-.particle-overlap-1 { top: 48%; right: 13%; opacity: 0.28; z-index: 3; animation-delay: 2.7s; }
-.particle-overlap-2 { top: 58%; right: 17%; opacity: 0.22; z-index: 3; animation-delay: 4.9s; }
-.particle-overlap-3 { top: 52%; right: 10%; opacity: 0.25; z-index: 3; animation-delay: 6.6s; }
-
-/* --- Particle Fix: Correct size and ensure overlap --- */
-.home .particle {
-  width: 4px !important;
-  height: 4px !important;
-  z-index: 22 !important;
-}
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3 {
-  z-index: 23 !important;
-}
-.home .particle-container {
-  z-index: 21 !important;
-}
-
-/* --- Particle Fix: Prevent overlap with profile image --- */
-.home .particle,
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3 {
-  z-index: 10 !important;
-}
-.home .home-img img {
-  z-index: 20 !important;
-  position: absolute;
-}
-
-/* --- Particle Final Fix: Always behind profile image --- */
-.home .particle,
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3,
-.home .particle-container {
-  z-index: -2;
-}
-.home .home-img img {
-  z-index: 2;
-  position: relative;
-}
-
-/* --- FINAL Particle/Image Stacking Fix: Image always above particles --- */
-.home .particle,
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3,
-.home .particle-container {
-  z-index: 0 !important;
-}
-.home .home-img img {
-  z-index: 10 !important;
-  position: relative !important;
-}
-
-/* --- Restore correct image position and stacking --- */
-.home .home-img img {
-  position: absolute !important;
-  right: 7% !important;
-  top: 18% !important;
-  z-index: 10 !important;
-}
-
-/* --- Ensure all particles are behind the profile image --- */
-.home .particle,
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3,
-.home .particle-container {
-  z-index: -1 !important;
-}
-.home .home-img img {
-  z-index: 10 !important;
-  position: absolute !important;
-}
-
-/* --- CLEAN FINAL Particle/Image Stacking: Only these rules apply --- */
-.home .particle,
-.home .particle-overlap-1,
-.home .particle-overlap-2,
-.home .particle-overlap-3,
-.home .particle-container {
-  z-index: -1 !important;
-}
-.home .home-img img {
-  z-index: 10 !important;
-  position: absolute !important;
-}
 
 /* REMOVED MORE CONFLICTING MODAL STYLES */
 
@@ -4774,7 +4460,7 @@ body {
 
 /* Critical resource hints for faster loading */
 body {
-    contain: layout style paint;
+    /* Removed contain: layout style paint; as it breaks position: fixed */
 }
 
 /* Optimize portfolio grid performance */
@@ -4789,17 +4475,6 @@ body {
     isolation: isolate;
 }
 
-/* Optimize floating animations */
-@keyframes satelliteFloat {
-    0%, 100% {
-        transform: translate3d(0, 0, 0) scale(1);
-        box-shadow: 0 6px 20px rgba(54, 92, 255, 0.2);
-    }
-    50% {
-        transform: translate3d(0, -12px, 0) scale(1.02);
-        box-shadow: 0 10px 30px rgba(54, 92, 255, 0.3);
-    }
-}
 
 /* Optimize portfolio cards */
 .portfolio-box {
@@ -5051,11 +4726,6 @@ body.dark-mode .profession-modal .modal-container {
   }
 }
 
-.logo-img {
-  border: none !important;
-  box-shadow: none !important;
-  background: none !important;
-}
 
 .blog-new-badge {
     position: absolute;
@@ -5101,77 +4771,6 @@ body.dark-mode .profession-modal .modal-container {
     100% { opacity: 0.7; left: 100%; }
 }
 
-/* Page Load Animations */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInRight {
-    0% {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes scaleIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Simplified Page Load Animations - No Delays */
-.home-content {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.home-img img {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.tech-satellite {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* Remove section animation delays */
-.about,
-.skills-breakdown,
-.portfolio,
-.serives,
-.blog,
-.contact {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
@@ -5244,4 +4843,509 @@ body.dark-mode .profession-modal .modal-container {
     transform: translateY(-1px) scale(1.02);
 }
 
-/* Remove blogBadgeFloat keyframes if not used elsewhere */
+/* ================================================================
+   DESIGN SYSTEM v2 — Warm Ivory · Deep Indigo · Syne headings
+   All rules appended after existing styles for cascade precedence.
+   ================================================================ */
+
+/* ── Progressive enhancement: heading rule default visible (no-JS safe) ── */
+.heading::after {
+    transform: scaleX(1);
+    transition: none;
+}
+.js-motion-ready .heading::after {
+    transform: scaleX(0);
+    transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: left center;
+}
+.js-motion-ready .heading.is-visible::after {
+    transform: scaleX(1);
+}
+
+/* ── Section headings — editorial left-aligned with hairline rule ── */
+.heading {
+    display: flex !important;
+    align-items: center !important;
+    font-family: var(--font-heading) !important;
+    font-size: 3.8rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--text-color) !important;
+    text-align: left !important;
+    margin-bottom: 5.6rem !important;
+}
+
+.heading::after {
+    content: '' !important;
+    flex: 1 !important;
+    min-width: 2rem !important;
+    height: 1px !important;
+    background: var(--border-color) !important;
+    transform-origin: left center !important;
+    display: block !important;
+    margin-left: 2.4rem !important;
+}
+
+/* ── Contact Section Title override ── */
+.contact .heading {
+    justify-content: center !important;
+    text-align: center !important;
+}
+.contact .heading::after {
+    display: none !important;
+}
+
+.heading span {
+    color: var(--main-color) !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    animation: none !important;
+    -webkit-text-fill-color: var(--main-color) !important;
+}
+
+/* ── Hero: hide content until GSAP animates it in (progressive enhancement) ── */
+.js-motion-ready .home-content > *,
+.js-motion-ready .home-img img {
+    opacity: 0;
+}
+
+/* ── Hero background — ambient radial gradients replace particle soup ── */
+.home {
+    background: radial-gradient(ellipse 55% 70% at 72% 55%, rgba(61, 79, 224, 0.06) 0%, transparent 65%),
+                radial-gradient(ellipse 30% 30% at 18% 25%, rgba(61, 79, 224, 0.04) 0%, transparent 55%);
+}
+.dark-mode .home {
+    background: radial-gradient(ellipse 55% 70% at 72% 55%, rgba(98, 114, 255, 0.10) 0%, transparent 65%),
+                radial-gradient(ellipse 30% 30% at 18% 25%, rgba(98, 114, 255, 0.06) 0%, transparent 55%);
+}
+
+/* ── Decorative clutter — removed, replaced by radial gradients above ── */
+.particle-container { display: none !important; }
+.data-stream { display: none !important; }
+.image-background-shape { display: none !important; }
+
+/* ── Hero typography — editorial scale ── */
+.home-content h3 {
+    font-family: var(--font-body) !important;
+    font-size: 1.6rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    color: var(--text-secondary) !important;
+    line-height: 1 !important;
+    margin-bottom: 1.6rem !important;
+}
+
+.home-content h1 {
+    font-family: var(--font-heading) !important;
+    font-size: 6.8rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.04 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 1rem !important;
+    text-shadow: none !important;
+}
+
+/* ── Hero image — refined drop shadow ── */
+.home-img img {
+    filter: drop-shadow(0 20px 48px rgba(28, 25, 23, 0.11)) !important;
+}
+.dark-mode .home-img img {
+    filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.44)) !important;
+}
+
+/* ── Tech satellites — clean badges with spring-curve CSS hover ── */
+.tech-satellite {
+    width: 5rem !important;
+    height: 5rem !important;
+    background: var(--card-bg) !important;
+    border: 1.5px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 12px var(--shadow-color) !important;
+    animation: none !important;
+    font-size: 1.8rem !important;
+    color: var(--text-secondary) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: border-color 0.22s ease,
+                color 0.22s ease,
+                box-shadow 0.22s ease,
+                transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+.tech-satellite i {
+    color: inherit !important;
+    text-shadow: none !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+.tech-satellite:hover {
+    border-color: var(--main-color) !important;
+    color: var(--main-color) !important;
+    box-shadow: 0 6px 24px rgba(61, 79, 224, 0.22) !important;
+    transform: scale(1.14) !important;
+    background: var(--card-bg) !important;
+    background-image: none !important;
+}
+.dark-mode .tech-satellite:hover {
+    box-shadow: 0 6px 24px rgba(98, 114, 255, 0.28) !important;
+}
+.tech-satellite:hover i {
+    color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+}
+.tech-satellite:active {
+    transform: scale(1.04) !important;
+    background: var(--main-color) !important;
+    color: #fff !important;
+}
+
+/* ── Services cards — refined surface, spring-curve lift ── */
+.services-container .services-box {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1.4rem !important;
+    box-shadow: 0 2px 12px var(--shadow-color) !important;
+    transition: background-color 0.25s ease,
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.25s ease,
+                box-shadow 0.3s ease !important;
+}
+.services-box:hover {
+    transform: translateY(-7px) !important;
+    border-color: rgba(61, 79, 224, 0.30) !important;
+    box-shadow: 0 16px 40px var(--shadow-color) !important;
+}
+
+/* ── Achievement cards ── */
+.achievement-box {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1.4rem !important;
+    box-shadow: 0 2px 12px var(--shadow-color) !important;
+    transition: background-color 0.25s ease,
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.25s ease,
+                box-shadow 0.3s ease !important;
+}
+.achievement-box:hover {
+    transform: translateY(-7px) !important;
+    border-color: rgba(61, 79, 224, 0.30) !important;
+    box-shadow: 0 16px 40px var(--shadow-color) !important;
+}
+
+/* Achievements section — flat bg, no gradient */
+.achievements {
+    background: var(--bg-color) !important;
+}
+
+/* ── Portfolio cards ── */
+.portfolio-box {
+    border-radius: 1.2rem !important;
+    box-shadow: 0 2px 12px var(--shadow-color) !important;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease !important;
+}
+.portfolio-box:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 48px var(--shadow-color) !important;
+}
+
+/* ── Buttons — Space Grotesk, solid, no gradient, spring-curve lift ── */
+.btn {
+    padding: 1.2rem 2.8rem !important;
+    background: var(--main-color) !important;
+    background-image: none !important;
+    border: 1.5px solid var(--main-color) !important;
+    border-radius: 0.8rem !important;
+    color: #fff !important;
+    font-family: var(--font-ui) !important;
+    font-size: 1.55rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 2px 12px rgba(61, 79, 224, 0.20) !important;
+    transition: background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+.btn::before { display: none !important; }
+.btn:hover {
+    background: var(--gradient-end) !important;
+    background-image: none !important;
+    box-shadow: 0 8px 28px rgba(61, 79, 224, 0.28) !important;
+    transform: translateY(-2px) !important;
+}
+.btn:active {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 2px 8px rgba(61, 79, 224, 0.20) !important;
+}
+
+/* ── Dynamic Island navbar ─────────────────────────────────────────────────
+   Centred with left:0 + right:0 + margin:auto — NO transform, so GSAP can
+   animate translateY freely without compose conflicts.
+   Starts hidden (opacity 0, y negative) — GSAP reveals it on scroll-up.
+   ───────────────────────────────────────────────────────────────────────── */
+.header {
+    position:      fixed !important;
+    top:           1.2rem !important;
+    left:          0 !important;
+    right:         0 !important;
+    margin-left:   auto !important;
+    margin-right:  auto !important;
+    z-index:       10000 !important;
+    width:         max-content !important;
+    max-width:     1180px !important;
+    padding:       0.85rem 2.8rem !important;
+    border-radius: 100px !important;
+    border:        1px solid rgba(28, 25, 23, 0.10) !important;
+    background:    rgba(247, 244, 239, 0.82) !important;
+    backdrop-filter:          blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter:  blur(24px) saturate(180%) !important;
+    box-shadow:    0 4px 28px rgba(28, 25, 23, 0.13), inset 0 1px 0 rgba(255,255,255,0.70) !important;
+    transition:    background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+    animation:     none !important;
+    /* Force visibility to prevent auto-hide from cached scripts */
+    opacity:       1 !important;
+    transform:     translateY(0) !important;
+}
+.dark-mode .header {
+    background:   rgba(15, 13, 24, 0.80) !important;
+    border-color: rgba(255, 255, 255, 0.09) !important;
+    box-shadow:   0 4px 32px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+/* Scrolled state — slightly stronger glass */
+.header.sticky {
+    background:   rgba(247, 244, 239, 0.90) !important;
+    box-shadow:   0 8px 40px rgba(28, 25, 23, 0.16), inset 0 1px 0 rgba(255,255,255,0.75) !important;
+    animation:    none !important;
+}
+.dark-mode .header.sticky {
+    background:   rgba(15, 13, 24, 0.90) !important;
+    box-shadow:   0 8px 40px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+/* Mobile — full-width pinned bar, no pill */
+@media (max-width: 768px) {
+    .header,
+    .header.sticky {
+        top:           0 !important;
+        left:          0 !important;
+        right:         0 !important;
+        width:         100% !important;
+        max-width:     none !important;
+        margin:        0 !important;
+        border-radius: 0 !important;
+        padding:       1.4rem 4% !important;
+        border:        none !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow:    none !important;
+        /* always visible on mobile */
+        opacity:       1 !important;
+        transform:     none !important;
+    }
+}
+
+/* ── Nav links — Space Grotesk for UI elements ── */
+.navbar a {
+    font-family: var(--font-ui) !important;
+    font-size: 1.5rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+}
+
+/* ── Contact form inputs ── */
+.contact form .input-box input,
+.contact form textarea,
+.contact-form input,
+.contact-form textarea {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0.8rem !important;
+    color: var(--text-color) !important;
+    font-family: var(--font-body) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+.contact form .input-box input:focus,
+.contact form textarea:focus {
+    border-color: var(--main-color) !important;
+    box-shadow: 0 0 0 3px rgba(61, 79, 224, 0.10) !important;
+    outline: none !important;
+}
+.dark-mode .contact form .input-box input:focus,
+.dark-mode .contact form textarea:focus {
+    box-shadow: 0 0 0 3px rgba(98, 114, 255, 0.15) !important;
+}
+
+/* ── Footer — minimal ── */
+.footer {
+    border-top: 1px solid var(--border-color) !important;
+    background: var(--bg-color) !important;
+}
+
+/* ── Fix the duplicate *:focus at line ~3136 that bypasses :focus-visible ── */
+*:focus:not(:focus-visible) {
+    outline: none !important;
+}
+
+/* ── Responsive type scale ── */
+@media (max-width: 768px) {
+    .home-content h1 { font-size: 4.8rem !important; }
+    .home-content h3 { font-size: 1.4rem !important; }
+    .heading { font-size: 3.2rem !important; margin-bottom: 4rem !important; }
+}
+
+@media (max-width: 480px) {
+    .home-content h1 { font-size: 3.8rem !important; }
+    .heading { font-size: 2.6rem !important; margin-bottom: 3.2rem !important; }
+}
+
+/* ── Reduced motion — disable all non-essential animation ── */
+@media (prefers-reduced-motion: reduce) {
+    .js-motion-ready .heading::after,
+    .js-motion-ready .heading.is-visible::after {
+        transform: scaleX(1) !important;
+        transition: none !important;
+    }
+    .js-motion-ready .home-content > *,
+    .js-motion-ready .home-img img {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .tech-satellite,
+    .btn,
+    .services-box,
+    .achievement-box,
+    .portfolio-box {
+        transition: background-color 0.1s ease, border-color 0.1s ease !important;
+    }
+    .tech-satellite:hover,
+    .services-box:hover,
+    .achievement-box:hover,
+    .portfolio-box:hover,
+    .btn:hover {
+        transform: none !important;
+    }
+}
+
+/* ================================================================
+   TYPOGRAPHY v2 — Space Grotesk as UI font
+   + Contrast/visibility fixes for both light and dark mode
+   ================================================================ */
+
+/* ── Space Grotesk: all UI text elements ── */
+.skill-box,
+.skill-box span,
+.tech-tag,
+.portfolio-layer h3,
+.portfolio-layer a,
+.blog-date,
+.blog-category,
+.achievement-box h3,
+.achievement-box .achievement-meta,
+.timeline-date,
+.timeline-company,
+.services-box h3,
+.contact form label,
+.footer-text,
+.filter-btn,
+[data-tag],
+.badge,
+.tag,
+.label,
+.caption {
+    font-family: var(--font-ui) !important;
+}
+
+/* ── Text color anchors — values now live in the :root / .dark-mode blocks above ── */
+
+/* Headings always use full-strength text color */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+}
+
+/* Body paragraphs: slightly muted for comfortable reading */
+p {
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+/* Cards: ensure text reads on card surfaces in both modes */
+.services-container .services-box,
+.achievement-box,
+.portfolio-box,
+.blog-box {
+    color: var(--text-color) !important;
+}
+
+/* ── Accent/main-color adjusts for each mode (already done via variables) ── */
+/* Ensure main-color is never used on a same-hue background */
+.dark-mode a:not(.btn):not(.logo) {
+    color: var(--main-color);      /* #6272FF on #0F0D18 — ≥ 4.5:1 ✓ */
+}
+
+a:not(.btn):not(.logo) {
+    color: var(--main-color);      /* #3D4FE0 on #F7F4EF — ≥ 4.5:1 ✓ */
+}
+
+/* ── Input text visibility in both modes ── */
+.contact form .input-box input,
+.contact form textarea,
+.contact-form input,
+.contact-form textarea {
+    color: var(--text-color) !important;
+}
+
+.contact form .input-box input::placeholder,
+.contact form textarea::placeholder {
+    color: var(--text-secondary) !important;
+    opacity: 0.7;
+}
+
+/* ── Home content — ensure greeting text visible on warm ivory ── */
+.home-content h3 {
+    color: var(--text-secondary) !important;
+}
+
+.home-content h1 {
+    color: var(--text-color) !important;
+}
+
+/* ── Section heading span (accent word) — visible in both modes ── */
+.heading span {
+    color: var(--main-color) !important;
+    -webkit-text-fill-color: var(--main-color) !important;
+}
+
+/* ── Timeline: ensure content readable on card bg ── */
+.timeline-content,
+.timeline-content h3,
+.timeline-content p {
+    color: var(--text-color);
+}
+
+/* ── Skills: badge legibility ── */
+.skill-box {
+    color: var(--text-color) !important;
+}
+
+/* ── Blog box text ── */
+.blog-box h2,
+.blog-box h3,
+.blog-box p {
+    color: var(--text-color);
+}
+
+/* ── Footer text ── */
+.footer p,
+.footer span,
+.footer a {
+    color: #ffffff;
+}
