@@ -32,4 +32,8 @@ logs
 
 # System Files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Internal Phase 1 reports (kept locally only)
+/docs/PORTFOLIO_PHASE1_IMPLEMENTATION_REPORT.md
+/docs/PORTFOLIO_PHASE1_PRE_PUSH_VALIDATION_REPORT.md
