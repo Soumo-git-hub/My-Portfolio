@@ -1,6 +1,6 @@
 # Soumyadyuti Dey Portfolio
 
-A modern, responsive portfolio website showcasing expertise in Cloud Architecture, AI/ML Engineering, and Cybersecurity.
+A modern, responsive portfolio website showcasing Soumyadyuti Dey's software engineering work across full-stack development, AI-powered applications, cloud systems, and cybersecurity.
 
 ## Key Features
 
@@ -108,7 +108,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Author
 
 **Soumyadyuti Dey**
-- Cloud Architect | AI/ML Engineer | Cybersecurity Specialist
+- Software Engineer | Full-Stack & AI Systems | Computer Vision Interests
 - [LinkedIn](https://www.linkedin.com/in/soumyadyuti-dey-245sd/)
 - [GitHub](https://github.com/Soumo-git-hub)
 - [Twitter](https://x.com/SoumyadyutiDey)

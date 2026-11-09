@@ -631,7 +631,7 @@ const professionData = {
     'cloud': {
         title: 'Cloud Architecture',
         icon: 'bx bxl-google-cloud',
-        description: 'Expert in designing and implementing scalable cloud infrastructures across AWS, Azure, and GCP. Specialized in cloud-native applications, serverless architectures, and DevOps practices. Experience includes containerization with Docker/Kubernetes, infrastructure as code with Terraform, and CI/CD pipeline optimization.',
+        description: 'Experienced in designing and implementing scalable cloud infrastructures across AWS, Azure, and GCP. Specialized in cloud-native applications, serverless architectures, and DevOps practices. Experience includes containerization with Docker/Kubernetes, infrastructure as code with Terraform, and CI/CD pipeline optimization.',
         skills: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Serverless', 'Microservices', 'CI/CD'],
         projects: [
             { name: 'Cloud Infrastructure Setup', icon: 'bx bx-server' },
@@ -642,7 +642,7 @@ const professionData = {
     'ai-ml': {
         title: 'AI/ML Engineering',
         icon: 'bx bx-brain',
-        description: 'Passionate about building intelligent systems and machine learning solutions. Expertise in Python-based ML pipelines, natural language processing, and large language models. Experience with deep learning frameworks, data preprocessing, and model deployment in production environments.',
+        description: 'Experienced in building intelligent systems and machine learning solutions. Experience with Python-based ML pipelines, natural language processing, and large language models. Experience with deep learning frameworks, data preprocessing, and model deployment in production environments.',
         skills: ['Python', 'TensorFlow', 'PyTorch', 'NLP', 'LLMs', 'Deep Learning', 'Data Science', 'Model Deployment', 'MLOps'],
         projects: [
             { name: 'AI-Powered Note Assistant', icon: 'bx bx-note' },
@@ -664,7 +664,7 @@ const professionData = {
     'devops': {
         title: 'DevOps & Infrastructure',
         icon: 'bx bx-server',
-        description: 'Expert in DevOps practices and infrastructure automation. Experience with containerization, orchestration, and infrastructure as code. Skilled in building robust CI/CD pipelines, monitoring systems, and ensuring high availability of services.',
+        description: 'Experienced in DevOps practices and infrastructure automation. Experience with containerization, orchestration, and infrastructure as code. Skilled in building robust CI/CD pipelines, monitoring systems, and ensuring high availability of services.',
         skills: ['Docker', 'Kubernetes', 'Jenkins', 'GitLab CI', 'Monitoring', 'Infrastructure as Code', 'Automation', 'High Availability'],
         projects: [
             { name: 'CI/CD Pipeline Setup', icon: 'bx bx-git-branch' },

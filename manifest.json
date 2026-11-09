@@ -1,7 +1,7 @@
 {
   "name": "Soumyadyuti Dey Portfolio",
   "short_name": "Soumyadyuti Dey",
-  "description": "Professional portfolio of Soumyadyuti Dey - Cloud Architect, AI/ML Engineer, and Cybersecurity Expert",
+  "description": "Professional portfolio of Soumyadyuti Dey, a Software Engineer working across full-stack development, AI-powered applications, and cloud systems, with growing interests in Computer Vision and research-oriented engineering.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#F7F4EF",
@@ -24,5 +24,5 @@
   "categories": ["science", "business", "productivity", "technology", "artificial-intelligence", "machine-learning", "cybersecurity", "cloud-computing", "devops", "web-development"],
   "lang": "en",
   "dir": "ltr",
-  "keywords": "Cloud Architect, AI Engineer, ML Engineer, Cybersecurity Expert, AWS, Azure, GCP, Python, JavaScript, DevOps, Kubernetes, Docker, Terraform, Machine Learning, Artificial Intelligence, Cybersecurity, Cloud Computing, Web Development, Full Stack Developer, Software Engineer, Portfolio"
+  "keywords": "Software Engineer, Full Stack Developer, Backend Developer, AI/ML Engineering, Cloud Systems, Computer Vision, AWS, Azure, GCP, Python, JavaScript, DevOps, Kubernetes, Docker, Terraform, Machine Learning, Artificial Intelligence, Cybersecurity, Cloud Computing, Web Development, Portfolio"
 }
